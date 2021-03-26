@@ -99,5 +99,5 @@ let run doc =
   let* formatter = formatter doc in
   let args = args formatter in
   let* binary = binary formatter in
-  let contents = Document.source doc |> Msource.text in
+  let contents = Document.source doc |> Merlin_kernel.Msource.text in
   exec binary args contents

@@ -1,4 +1,6 @@
 open Import
+open Typing
+open Merlin_kernel
 
 let infer_intf_for_impl doc =
   match Document.kind doc with

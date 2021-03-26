@@ -11,7 +11,7 @@ module List = Stdune.List
 module Result = Stdune.Result
 module Poly = Stdune.Poly
 module Logger = Lsp.Logger
-module Loc = Location
+module Loc = Merlin_parsing.Location
 module Scheduler = Fiber_unix.Scheduler
 module Server = Lsp_fiber.Server
 module Client_request = Lsp.Client_request
@@ -81,6 +81,7 @@ module RenameOptions = Lsp.Types.RenameOptions
 module Uri = Lsp.Uri
 module Io = Stdune.Io
 module Reply = Lsp_fiber.Rpc.Reply
+module WorkspaceSymbolParams = WorkspaceSymbolParams
 
 let sprintf = Stdune.sprintf
 

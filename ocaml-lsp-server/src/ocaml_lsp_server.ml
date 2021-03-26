@@ -60,7 +60,8 @@ let initialize_info : InitializeResult.t =
       ~referencesProvider:(`Bool true) ~documentHighlightProvider:(`Bool true)
       ~documentFormattingProvider:(`Bool true)
       ~selectionRangeProvider:(`Bool true) ~documentSymbolProvider:(`Bool true)
-      ~foldingRangeProvider:(`Bool true) ~experimental ~renameProvider ()
+      ~workspaceSymbolProvider:(`Bool true) ~foldingRangeProvider:(`Bool true)
+      ~experimental ~renameProvider ()
   in
   let serverInfo =
     let version = Version.get () in
@@ -589,6 +590,10 @@ let definition_query (state : State.t) uri position merlin_request =
   let result = location_of_merlin_loc uri result in
   Ok result
 
+let workspace_symbol (_state : State.t) (params : WorkspaceSymbolParams.t) =
+  let symbols = Workspace_symbol.run params in
+  Fiber.return (Ok (Some symbols))
+
 let highlight (state : State.t)
     { DocumentHighlightParams.textDocument = { uri }; position; _ } =
   let open Fiber.Result.O in
@@ -655,8 +660,8 @@ let ocaml_on_request :
   | Client_request.TextDocumentCodeLensResolve codeLens -> now codeLens
   | Client_request.TextDocumentCodeLens req -> later text_document_lens req
   | Client_request.TextDocumentHighlight req -> later highlight req
-  | Client_request.WorkspaceSymbol _ -> now None
-  | Client_request.DocumentSymbol { textDocument = { uri }; _ } ->
+  | Client_request.WorkspaceSymbol req -> later workspace_symbol req
+  | Client_request.DocumentSymbol { textDocument = { uri }; _ }->
     later document_symbol uri
   | Client_request.TextDocumentDeclaration { textDocument = { uri }; position }
     ->
@@ -895,4 +900,6 @@ let start () =
 
 let run ~log_file =
   Unix.putenv "__MERLIN_MASTER_PID" (string_of_int (Unix.getpid ()));
-  Logger.with_log_file ~sections:[ "ocamllsp"; "lsp" ] log_file start
+  Logger.with_log_file
+    ~sections:[ "ocamllsp"; "lsp"; "ocaml-lsp-server" ]
+    log_file start

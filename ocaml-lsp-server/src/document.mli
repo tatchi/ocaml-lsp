@@ -38,11 +38,12 @@ val timer : t -> Scheduler.timer
 
 val uri : t -> Uri.t
 
-val source : t -> Msource.t
+val source : t -> Merlin_kernel.Msource.t
 
-val with_pipeline : t -> (Mpipeline.t -> 'a) -> ('a, exn) result Fiber.t
+val with_pipeline :
+  t -> (Merlin_kernel.Mpipeline.t -> 'a) -> ('a, exn) result Fiber.t
 
-val with_pipeline_exn : t -> (Mpipeline.t -> 'a) -> 'a Fiber.t
+val with_pipeline_exn : t -> (Merlin_kernel.Mpipeline.t -> 'a) -> 'a Fiber.t
 
 val version : t -> int
 

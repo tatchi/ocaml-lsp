@@ -1,4 +1,5 @@
 open! Import
+open Merlin_kernel
 
 module Kind = struct
   type t =

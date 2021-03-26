@@ -28,4 +28,7 @@ val resolve :
   -> (CompletionItem.t, Jsonrpc.Response.Error.t) result Fiber.t
 
 val prefix_of_position :
-  short_path:bool -> Msource.t -> [< Msource.position ] -> string
+     short_path:bool
+  -> Merlin_kernel.Msource.t
+  -> [< Merlin_kernel.Msource.position ]
+  -> string
