@@ -661,7 +661,7 @@ let ocaml_on_request :
   | Client_request.TextDocumentCodeLens req -> later text_document_lens req
   | Client_request.TextDocumentHighlight req -> later highlight req
   | Client_request.WorkspaceSymbol req -> later workspace_symbol req
-  | Client_request.DocumentSymbol { textDocument = { uri }; _ }->
+  | Client_request.DocumentSymbol { textDocument = { uri }; _ } ->
     later document_symbol uri
   | Client_request.TextDocumentDeclaration { textDocument = { uri }; position }
     ->

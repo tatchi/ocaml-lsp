@@ -1,5 +1,4 @@
 open Import
-open Merlin_kernel
 
 let action_kind = "type-annotate"
 

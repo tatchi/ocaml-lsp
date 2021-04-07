@@ -38,11 +38,11 @@ let completion_kind kind : CompletionItemKind.t option =
     when not.
     @return prefix of [position] in [source] and its length *)
 let prefix_of_position ~short_path source position =
-  match Merlin_kernel.Msource.text source with
+  match Msource.text source with
   | "" -> ""
   | text ->
     let from =
-      let (`Offset index) = Merlin_kernel.Msource.get_offset source position in
+      let (`Offset index) = Msource.get_offset source position in
       min (String.length text - 1) (index - 1)
     in
     let pos =
@@ -85,12 +85,12 @@ let prefix_of_position ~short_path source position =
     String.sub text ~pos ~len
 
 let suffix_of_position source position =
-  match Merlin_kernel.Msource.text source with
+  match Msource.text source with
   | "" -> ""
   | text ->
     let len = String.length text in
     let from =
-      let (`Offset index) = Merlin_kernel.Msource.get_offset source position in
+      let (`Offset index) = Msource.get_offset source position in
       min index (len - 1)
     in
     let len =
