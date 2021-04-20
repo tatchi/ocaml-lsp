@@ -1,13 +1,33 @@
 open! Import
 open Types
 
+module Progress = struct
+  type t =
+    | Begin of WorkDoneProgressBegin.t
+    | Report of WorkDoneProgressReport.t
+    | End of WorkDoneProgressEnd.t
+
+  let yojson_of_t = function
+    | Begin b -> WorkDoneProgressBegin.yojson_of_t b
+    | Report r -> WorkDoneProgressReport.yojson_of_t r
+    | End e -> WorkDoneProgressEnd.yojson_of_t e
+
+  let t_of_yojson json =
+    Json.Of.untagged_union "Progress"
+      [ (fun j -> Begin (WorkDoneProgressBegin.t_of_yojson j))
+      ; (fun j -> Report (WorkDoneProgressReport.t_of_yojson j))
+      ; (fun j -> End (WorkDoneProgressEnd.t_of_yojson j))
+      ]
+      json
+end
+
 type t =
   | PublishDiagnostics of PublishDiagnosticsParams.t
   | ShowMessage of ShowMessageParams.t
-  | LogMessage of ShowMessageParams.t
+  | LogMessage of LogMessageParams.t
   | TelemetryNotification of Json.t
   | CancelRequest of Jsonrpc.Id.t
-  | WorkDoneProgressCancel of WorkDoneProgressCancelParams.t
+  | WorkDoneProgress of Progress.t ProgressParams.t
   | Unknown_notification of Jsonrpc.Message.notification
 
 let method_ = function
@@ -16,18 +36,17 @@ let method_ = function
   | LogMessage _ -> "window/logMessage"
   | TelemetryNotification _ -> "telemetry/event"
   | CancelRequest _ -> Cancel_request.meth_
-  | WorkDoneProgressCancel _ -> "window/workDoneProgress/cancel"
+  | WorkDoneProgress _ -> "$/progress"
   | Unknown_notification _ -> assert false
 
 let yojson_of_t = function
-  | LogMessage params
-  | ShowMessage params ->
-    ShowMessageParams.yojson_of_t params
+  | LogMessage params -> LogMessageParams.yojson_of_t params
+  | ShowMessage params -> ShowMessageParams.yojson_of_t params
   | PublishDiagnostics params -> PublishDiagnosticsParams.yojson_of_t params
   | TelemetryNotification params -> params
   | CancelRequest params -> Cancel_request.yojson_of_t params
-  | WorkDoneProgressCancel params ->
-    WorkDoneProgressCancelParams.yojson_of_t params
+  | WorkDoneProgress params ->
+    (ProgressParams.yojson_of_t Progress.yojson_of_t) params
   | Unknown_notification _ -> assert false
 
 let to_jsonrpc t =
@@ -39,25 +58,23 @@ let of_jsonrpc (r : Jsonrpc.Message.notification) =
   let open Result.O in
   match r.method_ with
   | "window/showMessage" ->
-    let+ params = Jsonrpc.Message.params r ShowMessageParams.t_of_yojson in
+    let+ params = Json.message_params r ShowMessageParams.t_of_yojson in
     ShowMessage params
   | "textDocument/publishDiagnostics" ->
-    let+ params =
-      Jsonrpc.Message.params r PublishDiagnosticsParams.t_of_yojson
-    in
+    let+ params = Json.message_params r PublishDiagnosticsParams.t_of_yojson in
     PublishDiagnostics params
   | "window/logMessage" ->
-    let+ params = Jsonrpc.Message.params r ShowMessageParams.t_of_yojson in
+    let+ params = Json.message_params r LogMessageParams.t_of_yojson in
     LogMessage params
   | "telemetry/event" ->
-    let+ params = Jsonrpc.Message.params r (fun x -> x) in
+    let+ params = Json.message_params r (fun x -> x) in
     TelemetryNotification params
-  | m when m = Cancel_request.meth_ ->
-    let+ params = Jsonrpc.Message.params r Cancel_request.t_of_yojson in
-    CancelRequest params
-  | "window/workDoneProgress/cancel" ->
+  | "$/progress" ->
     let+ params =
-      Jsonrpc.Message.params r WorkDoneProgressCancelParams.t_of_yojson
+      Json.message_params r (ProgressParams.t_of_yojson Progress.t_of_yojson)
     in
-    WorkDoneProgressCancel params
+    WorkDoneProgress params
+  | m when m = Cancel_request.meth_ ->
+    let+ params = Json.message_params r Cancel_request.t_of_yojson in
+    CancelRequest params
   | _ -> Ok (Unknown_notification r)

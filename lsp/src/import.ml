@@ -104,17 +104,6 @@ module String = struct
         Buffer.contents buffer
 end
 
-let let_ref r v f =
-  let v' = !r in
-  r := v;
-  match f () with
-  | result ->
-    r := v';
-    result
-  | exception exn ->
-    r := v';
-    raise exn
-
 module Json = struct
   type t = Ppx_yojson_conv_lib.Yojson.Safe.t
 
@@ -173,7 +162,9 @@ module Json = struct
     let ( <|> ) c1 c2 json =
       match c1 json with
       | s -> s
-      | exception Conv.Of_yojson_error (_, _) -> c2 json
+      | (exception Jsonrpc.Json.Of_json (_, _))
+      | (exception Conv.Of_yojson_error (_, _)) ->
+        c2 json
   end
 
   module Option = struct
@@ -279,31 +270,23 @@ module Json = struct
 
     let yojson_of_t (_ : t) = assert false
   end
-end
 
-module Log = struct
-  let level : (string option -> bool) ref = ref (fun _ -> false)
+  let read_json_params f v =
+    match f (Jsonrpc.Message.Structured.to_json v) with
+    | r -> Ok r
+    | exception Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (Failure msg, _)
+      ->
+      Error msg
 
-  let out = ref Format.err_formatter
+  let require_params json =
+    match json with
+    | None -> Error "params are required"
+    | Some params -> Ok params
 
-  type message =
-    { message : string
-    ; payload : (string * Json.t) list
-    }
-
-  let msg message payload = { message; payload }
-
-  let log ?section k =
-    if !level section then (
-      let message = k () in
-      (match section with
-      | None -> Format.fprintf !out "%s@." message.message
-      | Some section -> Format.fprintf !out "[%s] %s@." section message.message);
-      (match message.payload with
-      | [] -> ()
-      | fields -> Format.fprintf !out "%a@." Json.pp (`Assoc fields));
-      Format.pp_print_flush !out ()
-    )
+  let message_params (t : _ Jsonrpc.Message.t) f =
+    match require_params t.params with
+    | Error e -> Error e
+    | Ok x -> read_json_params f x
 end
 
 let sprintf = Stdune.sprintf

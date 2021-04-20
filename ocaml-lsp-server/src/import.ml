@@ -13,7 +13,6 @@ module String = Stdune.String
 module List = Stdune.List
 module Result = Stdune.Result
 module Poly = Stdune.Poly
-module Logger = Lsp.Logger
 module Loc = Location
 module Scheduler = Fiber_unix.Scheduler
 module Server = Lsp_fiber.Server
@@ -85,6 +84,10 @@ module Uri = Lsp.Uri
 module Io = Stdune.Io
 module Reply = Lsp_fiber.Rpc.Reply
 module WorkspaceSymbolParams = WorkspaceSymbolParams
+module TraceValue = TraceValue
+module SetTraceParams = SetTraceParams
+module LogMessageParams = LogMessageParams
+module Log = Lsp_fiber.Import.Log
 
 let sprintf = Stdune.sprintf
 
@@ -112,5 +115,3 @@ module Fiber = struct
     end
   end
 end
-
-let { Logger.log } = Logger.for_section "ocaml-lsp-server"

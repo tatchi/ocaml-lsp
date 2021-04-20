@@ -37,7 +37,6 @@ let pipe () =
 
 let test make_client make_server =
   Printexc.record_backtrace false;
-  (Lsp.Import.Log.level := fun _ -> true);
   let client_in, server_out = pipe () in
   let server_in, client_out = pipe () in
   let scheduler = Scheduler.create () in
@@ -206,27 +205,25 @@ end
 
 let%expect_test "ent to end run of lsp tests" =
   test End_to_end_client.run End_to_end_server.run;
-  [%expect.unreachable]
-  [@@expect.uncaught_exn
+  [%expect
     {|
-  ("Fiber_unix__Scheduler.Abort(_)")
-  Trailing output
-  ---------------
-  client: waiting for initialization
-  server: initializing server
-  server: returning initialization result
-  client: server initialized. sending request
-  server: executing command
-  server: sending message notification to client
-  server: scheduling show message
-  server: scheduling show message
-  client: sending request
-  client: Successfully executed command with result:
-  "successful execution"
-  client: waiting to receive notification before shutdown
-  server: sending show message notification
-  server: 0 ran
-  client: received notification
-  window/showMessage
-  client: filled received_notification
-  client: sending request to shutdown |}]
+    client: waiting for initialization
+    server: initializing server
+    server: returning initialization result
+    client: server initialized. sending request
+    server: executing command
+    server: sending message notification to client
+    server: scheduling show message
+    server: scheduling show message
+    client: sending request
+    client: Successfully executed command with result:
+    "successful execution"
+    client: waiting to receive notification before shutdown
+    server: sending show message notification
+    server: 0 ran
+    client: received notification
+    window/showMessage
+    client: filled received_notification
+    client: sending request to shutdown
+    Successful termination of test
+    [TEST] finished |}]
