@@ -7,8 +7,8 @@ let client_capabilities (state : State.t) =
 
 let make_error = Jsonrpc.Response.Error.make
 
-let not_supported =
-  Error
+let not_supported () =
+  Jsonrpc.Response.Error.raise
     (make_error ~code:InternalError ~message:"Request not supported yet!" ())
 
 let initialize_info : InitializeResult.t =
@@ -165,14 +165,14 @@ let on_initialize rpc (ip : Lsp.Types.InitializeParams.t) =
   (initialize_info, state)
 
 let code_action (state : State.t) (params : CodeActionParams.t) =
-  let open Fiber.Result.O in
+  let open Fiber.O in
   let store = state.store in
   let uri = params.textDocument.uri in
   let* doc = Fiber.return (Document_store.get store uri) in
   let code_action (kind, f) =
     match params.context.only with
     | Some set when not (List.mem set kind ~equal:Poly.equal) ->
-      Fiber.return (Ok None)
+      Fiber.return None
     | Some _
     | None ->
       let+ action_opt = f () in
@@ -189,11 +189,7 @@ let code_action (state : State.t) (params : CodeActionParams.t) =
         , fun () -> Action_type_annotate.code_action doc params )
       ]
   in
-  let open Result.O in
-  let+ code_action_results =
-    (* TODO use Result.List.filter_map after updating stdune *)
-    Result.List.all code_action_results |> Result.map ~f:List.filter_opt
-  in
+  let code_action_results = List.filter_opt code_action_results in
   match code_action_results with
   | [] -> None
   | l -> Some l
@@ -223,7 +219,7 @@ module Formatter = struct
         task_if_running state ~f:(fun () ->
             Server.notification rpc (ShowMessage msg))
       in
-      Error error
+      Jsonrpc.Response.Error.raise error
     | Result.Ok result ->
       let pos line col = { Position.character = col; line } in
       let range =
@@ -234,7 +230,7 @@ module Formatter = struct
           { Range.start = start_pos; end_ = end_pos }
       in
       let change = { TextEdit.newText = result; range } in
-      Fiber.return (Ok (Some [ change ]))
+      Fiber.return (Some [ change ])
 end
 
 let markdown_support (client_capabilities : ClientCapabilities.t) ~field =
@@ -328,15 +324,14 @@ let query_type doc pos =
 let hover (state : State.t) { HoverParams.textDocument = { uri }; position; _ }
     =
   let store = state.store in
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get store uri) in
+  let doc = Document_store.get store uri in
   let pos = Position.logical position in
   let client_capabilities = client_capabilities state in
   let open Fiber.O in
   (* TODO we shouldn't acquiring the merlin thread twice per request *)
   let* query_type = query_type doc pos in
   match query_type with
-  | None -> Fiber.return @@ Ok None
+  | None -> Fiber.return None
   | Some (loc, typ) ->
     let syntax = Document.syntax doc in
     let+ doc = query_doc doc pos in
@@ -349,13 +344,12 @@ let hover (state : State.t) { HoverParams.textDocument = { uri }; position; _ }
     in
     let range = Range.of_loc loc in
     let resp = Hover.create ~contents ~range () in
-    Ok (Some resp)
+    Some resp
 
 let signature_help (state : State.t)
     { SignatureHelpParams.textDocument = { uri }; position; _ } =
   let store = state.store in
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get store uri) in
+  let doc = Document_store.get store uri in
   let pos = Position.logical position in
   let client_capabilities = client_capabilities state in
   let prefix =
@@ -376,7 +370,7 @@ let signature_help (state : State.t)
   match application_signature with
   | None ->
     let help = SignatureHelp.create ~signatures:[] () in
-    Fiber.return (Ok help)
+    Fiber.return help
   | Some a ->
     let fun_name = Option.value ~default:"_" a.function_name in
     let prefix = sprintf "%s : " fun_name in
@@ -403,48 +397,40 @@ let signature_help (state : State.t)
     let info =
       SignatureInformation.create ~label ?documentation ~parameters ()
     in
-    let help =
-      SignatureHelp.create ~signatures:[ info ] ~activeSignature:0
-        ?activeParameter:a.active_param ()
-    in
-    Ok help
+    SignatureHelp.create ~signatures:[ info ] ~activeSignature:0
+      ?activeParameter:a.active_param ()
 
 let text_document_lens (state : State.t)
     { CodeLensParams.textDocument = { uri }; _ } =
   let store = state.store in
-  let open Fiber.Result.O in
-  let* doc = Fiber.return @@ Document_store.get store uri in
+  let doc = Document_store.get store uri in
   match Document.kind doc with
-  | Intf -> Fiber.return @@ Ok []
+  | Intf -> Fiber.return []
   | Impl ->
     let open Fiber.O in
     let command = Query_protocol.Outline in
     let+ outline = Document.dispatch_exn doc command in
-    let symbol_infos =
-      let rec symbol_info_of_outline_item item =
-        let children =
-          List.concat_map item.Query_protocol.children
-            ~f:symbol_info_of_outline_item
-        in
-        match item.Query_protocol.outline_type with
-        | None -> children
-        | Some typ ->
-          let loc = item.Query_protocol.location in
-          let info =
-            let range = Range.of_loc loc in
-            let command = Command.create ~title:typ ~command:"" () in
-            CodeLens.create ~range ~command ()
-          in
-          info :: children
+    let rec symbol_info_of_outline_item item =
+      let children =
+        List.concat_map item.Query_protocol.children
+          ~f:symbol_info_of_outline_item
       in
-      List.concat_map ~f:symbol_info_of_outline_item outline
+      match item.Query_protocol.outline_type with
+      | None -> children
+      | Some typ ->
+        let loc = item.Query_protocol.location in
+        let info =
+          let range = Range.of_loc loc in
+          let command = Command.create ~title:typ ~command:"" () in
+          CodeLens.create ~range ~command ()
+        in
+        info :: children
     in
-    Ok symbol_infos
+    List.concat_map ~f:symbol_info_of_outline_item outline
 
 let folding_range (state : State.t)
     { FoldingRangeParams.textDocument = { uri }; _ } =
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get state.store uri) in
+  let doc = Document_store.get state.store uri in
   let command = Query_protocol.Outline in
   let open Fiber.O in
   let+ outline = Document.dispatch_exn doc command in
@@ -469,12 +455,11 @@ let folding_range (state : State.t)
     loop [] outline
     |> List.sort ~compare:(fun x y -> Ordering.of_int (compare x y))
   in
-  Ok (Some folds)
+  Some folds
 
 let rename (state : State.t)
     { RenameParams.textDocument = { uri }; position; newName; _ } =
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get state.store uri) in
+  let doc = Document_store.get state.store uri in
   let command =
     Query_protocol.Occurrences (`Ident_at (Position.logical position))
   in
@@ -507,7 +492,7 @@ let rename (state : State.t)
     else
       WorkspaceEdit.create ~changes:[ (uri, edits) ] ()
   in
-  Ok workspace_edits
+  workspace_edits
 
 let selection_range (state : State.t)
     { SelectionRangeParams.textDocument = { uri }; positions; _ } =
@@ -535,8 +520,7 @@ let selection_range (state : State.t)
     in
     nearest_range
   in
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get state.store uri) in
+  let doc = Document_store.get state.store uri in
   let open Fiber.O in
   let+ ranges =
     Fiber.sequential_map positions ~f:(fun x ->
@@ -545,44 +529,38 @@ let selection_range (state : State.t)
         let+ shapes = Document.dispatch_exn doc command in
         selection_range_of_shapes x shapes)
   in
-  Ok (List.filter_opt ranges)
+  List.filter_opt ranges
 
 let references (state : State.t)
     { ReferenceParams.textDocument = { uri }; position; _ } =
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get state.store uri) in
+  let doc = Document_store.get state.store uri in
   let command =
     Query_protocol.Occurrences (`Ident_at (Position.logical position))
   in
   let open Fiber.O in
   let+ locs = Document.dispatch_exn doc command in
-  let lsp_locs =
-    List.map locs ~f:(fun loc ->
-        let range = Range.of_loc loc in
-        (* using original uri because merlin is looking only in local file *)
-        { Location.uri; range })
-  in
-  Ok (Some lsp_locs)
+  Some
+    (List.map locs ~f:(fun loc ->
+         let range = Range.of_loc loc in
+         (* using original uri because merlin is looking only in local file *)
+         { Location.uri; range }))
 
 let definition_query (state : State.t) uri position merlin_request =
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get state.store uri) in
+  let doc = Document_store.get state.store uri in
   let position = Position.logical position in
   let command = merlin_request position in
   let open Fiber.O in
   let+ result = Document.dispatch_exn doc command in
-  let result = location_of_merlin_loc uri result in
-  Ok result
+  location_of_merlin_loc uri result
 
 let workspace_symbol (_state : State.t) (params : WorkspaceSymbolParams.t) =
   let symbols = Workspace_symbol.run params in
-  Fiber.return (Ok (Some symbols))
+  Fiber.return (Some symbols)
 
 let highlight (state : State.t)
     { DocumentHighlightParams.textDocument = { uri }; position; _ } =
-  let open Fiber.Result.O in
   let store = state.store in
-  let* doc = Fiber.return (Document_store.get store uri) in
+  let doc = Document_store.get store uri in
   let command =
     Query_protocol.Occurrences (`Ident_at (Position.logical position))
   in
@@ -595,16 +573,15 @@ let highlight (state : State.t)
            between assignment and usage. *)
         DocumentHighlight.create ~range ~kind:DocumentHighlightKind.Text ())
   in
-  Ok (Some lsp_locs)
+  Some lsp_locs
 
 let document_symbol (state : State.t) uri =
   let store = state.store in
-  let open Fiber.Result.O in
-  let* doc = Fiber.return (Document_store.get store uri) in
+  let doc = Document_store.get store uri in
   let client_capabilities = client_capabilities state in
   let open Fiber.O in
   let+ symbols = Document_symbol.run client_capabilities doc uri in
-  Ok (Some symbols)
+  Some symbols
 
 (** handles requests for OCaml (syntax) documents *)
 let ocaml_on_request :
@@ -615,7 +592,7 @@ let ocaml_on_request :
  fun rpc req ->
   let state = Server.state rpc in
   let store = state.store in
-  let now res = Fiber.return (Reply.now (Ok res), state) in
+  let now res = Fiber.return (Reply.now res, state) in
   let later f req =
     Fiber.return
       ( Reply.later (fun k ->
@@ -624,12 +601,10 @@ let ocaml_on_request :
             k resp)
       , state )
   in
-  let not_supported = Fiber.return (Reply.now not_supported, state) in
-  let error e = Fiber.return (Reply.now (Error e), state) in
   match req with
   | Client_request.Initialize ip ->
     let res, state = on_initialize rpc ip in
-    Fiber.return (Reply.now (Ok res), state)
+    Fiber.return (Reply.now res, state)
   | Client_request.Shutdown -> now ()
   | Client_request.DebugTextDocumentGet { textDocument = { uri }; position = _ }
     -> (
@@ -672,8 +647,8 @@ let ocaml_on_request :
       { textDocument = { uri }; position; _ } ->
     later
       (fun _ () ->
-        let open Fiber.Result.O in
-        let* doc = Fiber.return (Document_store.get store uri) in
+        let doc = Document_store.get store uri in
+        let open Fiber.O in
         let+ resp = Compl.complete doc position in
         Some resp)
       ()
@@ -681,8 +656,7 @@ let ocaml_on_request :
       { textDocument = { uri }; position } ->
     later
       (fun _ () ->
-        let open Fiber.Result.O in
-        let* doc = Fiber.return (Document_store.get store uri) in
+        let doc = Document_store.get store uri in
         let command =
           Query_protocol.Occurrences (`Ident_at (Position.logical position))
         in
@@ -693,12 +667,12 @@ let ocaml_on_request :
               let range = Range.of_loc loc in
               Position.compare_inclusion position range = `Inside)
         in
-        Ok (Option.map loc ~f:Range.of_loc))
+        Option.map loc ~f:Range.of_loc)
       ()
   | Client_request.TextDocumentRename req -> later rename req
   | Client_request.TextDocumentFoldingRange req -> later folding_range req
   | Client_request.SignatureHelp req -> later signature_help req
-  | Client_request.ExecuteCommand _ -> not_supported
+  | Client_request.ExecuteCommand _ -> not_supported ()
   | Client_request.TextDocumentLinkResolve l -> now l
   | Client_request.TextDocumentLink _ -> now None
   | Client_request.WillSaveWaitUntilTextDocument _ -> now None
@@ -714,32 +688,30 @@ let ocaml_on_request :
               let* completion_item = completion.completionItem in
               completion_item.documentationFormat)
         in
-        let open Fiber.Result.O in
         let resolve = Compl.Resolve.of_completion_item ci in
-        let* doc =
+        let doc =
           let uri = Compl.Resolve.uri resolve in
-          Fiber.return (Document_store.get state.store uri)
+          Document_store.get state.store uri
         in
-        let* compl = Compl.resolve doc ci resolve query_doc ~markdown in
-        Fiber.return @@ Ok compl)
+        Compl.resolve doc ci resolve query_doc ~markdown)
       ()
   | Client_request.TextDocumentFormatting
       { textDocument = { uri }; options = _; _ } ->
     later
       (fun _ () ->
-        let open Fiber.Result.O in
-        let* doc = Fiber.return (Document_store.get store uri) in
+        let doc = Document_store.get store uri in
         Formatter.run rpc doc)
       ()
   | Client_request.TextDocumentOnTypeFormatting _ -> now None
   | Client_request.SelectionRange req -> later selection_range req
-  | Client_request.TextDocumentMoniker _ -> not_supported
-  | Client_request.SemanticTokensFull _ -> not_supported
-  | Client_request.SemanticTokensDelta _ -> not_supported
-  | Client_request.SemanticTokensRange _ -> not_supported
-  | Client_request.LinkedEditingRange _ -> not_supported
+  | Client_request.TextDocumentMoniker _ -> not_supported ()
+  | Client_request.SemanticTokensFull _ -> not_supported ()
+  | Client_request.SemanticTokensDelta _ -> not_supported ()
+  | Client_request.SemanticTokensRange _ -> not_supported ()
+  | Client_request.LinkedEditingRange _ -> not_supported ()
   | Client_request.UnknownRequest _ ->
-    error (make_error ~code:InvalidRequest ~message:"Got unknown request" ())
+    Jsonrpc.Response.Error.raise
+      (make_error ~code:InvalidRequest ~message:"Got unknown request" ())
 
 let on_request :
     type resp.
@@ -767,13 +739,10 @@ let on_request :
       |> List.assoc_opt meth
     with
     | None ->
-      Fiber.return
-        ( Reply.now
-            (Error
-               (make_error ~code:InternalError ~message:"Unknown method"
-                  ~data:(`Assoc [ ("method", `String meth) ])
-                  ()))
-        , state )
+      Jsonrpc.Response.Error.raise
+        (make_error ~code:InternalError ~message:"Unknown method"
+           ~data:(`Assoc [ ("method", `String meth) ])
+           ())
     | Some handler ->
       Fiber.return
         ( Reply.later (fun send ->
@@ -783,7 +752,7 @@ let on_request :
         , state ))
   | _ -> (
     match syntax with
-    | Some (Ocamllex | Menhir) -> Fiber.return (Reply.now not_supported, state)
+    | Some (Ocamllex | Menhir) -> not_supported ()
     | _ -> ocaml_on_request server req)
 
 let on_notification server (notification : Client_notification.t) :
@@ -807,18 +776,13 @@ let on_notification server (notification : Client_notification.t) :
     let* () = send_diagnostics ~diagnostics:[] server (Option.value_exn doc) in
     let+ () = Document_store.remove_document store uri in
     state
-  | TextDocumentDidChange { textDocument = { uri; version }; contentChanges }
-    -> (
-    match Document_store.get store uri with
-    | Error e ->
-      Format.eprintf "uri doesn't exist %s@.%!" e.message;
-      Fiber.return state
-    | Ok prev_doc ->
-      let open Fiber.O in
-      let* doc = Document.update_text ~version prev_doc contentChanges in
-      Document_store.put store doc;
-      let+ () = send_diagnostics server doc in
-      state)
+  | TextDocumentDidChange { textDocument = { uri; version }; contentChanges } ->
+    let prev_doc = Document_store.get store uri in
+    let open Fiber.O in
+    let* doc = Document.update_text ~version prev_doc contentChanges in
+    Document_store.put store doc;
+    let+ () = send_diagnostics server doc in
+    state
   | CancelRequest _ ->
     Log.log ~section:"debug" (fun () -> Log.msg "ignoring cancellation" []);
     Fiber.return state
