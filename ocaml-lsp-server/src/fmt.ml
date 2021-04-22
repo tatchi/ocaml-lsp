@@ -1,40 +1,71 @@
 open Import
 
-let read_to_end (in_chan : in_channel) : string =
-  let buf = Buffer.create 0 in
-  let chunk_size = 1024 in
-  let chunk = Bytes.create chunk_size in
-  let rec go pos =
-    let actual_len = input in_chan chunk pos chunk_size in
-    if actual_len > 0 then (
-      Buffer.add_subbytes buf chunk 0 actual_len;
-      go pos
-    )
-  in
-  go 0;
-  Buffer.contents buf
-
 type command_result =
   { stdout : string
   ; stderr : string
   ; status : Unix.process_status
   }
 
-let run_command command stdin_value args : command_result =
-  let command =
-    match args with
-    | [] -> command
-    | _ -> Printf.sprintf "%s %s" command (String.concat ~sep:" " args)
+type t =
+  { stdin : Scheduler.thread Lazy.t
+  ; stderr : Scheduler.thread Lazy.t
+  ; stdout : Scheduler.thread Lazy.t
+  ; scheduler : Scheduler.t
+  }
+
+let create scheduler =
+  let stdout = lazy (Scheduler.create_thread scheduler) in
+  let stderr = lazy (Scheduler.create_thread scheduler) in
+  let stdin = lazy (Scheduler.create_thread scheduler) in
+  { stdout; stderr; stdin; scheduler }
+
+let run_command state bin stdin_value args : command_result Fiber.t =
+  let open Fiber.O in
+  let stdin_i, stdin_o = Unix.pipe ~cloexec:true () in
+  let stdout_i, stdout_o = Unix.pipe ~cloexec:true () in
+  let stderr_i, stderr_o = Unix.pipe ~cloexec:true () in
+  let pid =
+    let args = Array.of_list (bin :: args) in
+    Unix.create_process bin args stdin_i stdout_o stderr_o |> Stdune.Pid.of_int
   in
-  let env = Unix.environment () in
-  (* We cannot use Unix.open_process_args_full while we still support 4.06 *)
-  let in_chan, out_chan, err_chan = Unix.open_process_full command env in
-  output_string out_chan stdin_value;
-  flush out_chan;
-  close_out out_chan;
-  let stdout = read_to_end in_chan in
-  let stderr = read_to_end err_chan in
-  let status = Unix.close_process_full (in_chan, out_chan, err_chan) in
+  Unix.close stdin_i;
+  Unix.close stdout_o;
+  Unix.close stderr_o;
+  let stdin () =
+    let+ res =
+      Scheduler.async_exn (Lazy.force state.stdin) (fun () ->
+          let out_chan = Unix.out_channel_of_descr stdin_o in
+          output_string out_chan stdin_value;
+          flush out_chan;
+          close_out out_chan)
+      |> Scheduler.await_no_cancel
+    in
+    match res with
+    | Ok s -> s
+    | Error e -> Exn_with_backtrace.reraise e
+  in
+  let read th from =
+    let+ res =
+      Scheduler.async_exn th (fun () ->
+          let in_ = Unix.in_channel_of_descr from in
+          let contents = Stdune.Io.read_all in_ in
+          close_in_noerr in_;
+          contents)
+      |> Scheduler.await_no_cancel
+    in
+    match res with
+    | Ok s -> s
+    | Error e -> Exn_with_backtrace.reraise e
+  in
+  let stdout () = read (Lazy.force state.stdout) stdout_i in
+  let stderr () = read (Lazy.force state.stderr) stderr_i in
+  let+ status, (stdout, stderr) =
+    Fiber.fork_and_join
+      (fun () -> Scheduler.wait_for_process state.scheduler pid)
+      (fun () ->
+        Fiber.fork_and_join_unit stdin (fun () ->
+            Fiber.fork_and_join stdout stderr))
+  in
   { stdout; stderr; status }
 
 type error =
@@ -87,17 +118,22 @@ let formatter doc =
   | Ocaml -> Ok (Ocaml (Document.uri doc))
   | Reason -> Ok (Reason (Document.kind doc))
 
-let exec bin args stdin =
+let exec state bin args stdin =
   let refmt = Fpath.to_string bin in
-  let res = run_command refmt stdin args in
+  let open Fiber.O in
+  let+ res = run_command state refmt stdin args in
   match res.status with
   | Unix.WEXITED 0 -> Result.Ok res.stdout
   | _ -> Result.Error (Unexpected_result { message = res.stderr })
 
-let run doc =
-  let open Result.O in
-  let* formatter = formatter doc in
-  let args = args formatter in
-  let* binary = binary formatter in
-  let contents = Document.source doc |> Msource.text in
-  exec binary args contents
+let run state doc : (string, error) result Fiber.t =
+  let res =
+    let open Result.O in
+    let* formatter = formatter doc in
+    let args = args formatter in
+    let+ binary = binary formatter in
+    (binary, args, Document.source doc |> Msource.text)
+  in
+  match res with
+  | Error e -> Fiber.return (Error e)
+  | Ok (binary, args, contents) -> exec state binary args contents
