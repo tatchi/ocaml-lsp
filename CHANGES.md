@@ -4,6 +4,13 @@
 
 - Code action to annotate a value with its type (#397)
 
+## Fixes
+
+- Fix interface/implementation switching on Windows (#427)
+
+- Correctly parse project paths with spaces and other special characters that
+  must be escaped.
+
 # 1.5.0 (03/18/2020)
 
 - Support 4.12 and drop support for all earlier versions
