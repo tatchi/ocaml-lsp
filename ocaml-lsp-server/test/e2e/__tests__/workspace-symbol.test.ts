@@ -30,6 +30,14 @@ describe("workspace/symbol", () => {
 
     let result: Types.SymbolInformation[] = await queryWorkspaceSymbol("");
 
-    expect(result).toMatchSnapshot();
+    expect(
+      result.map((symbolInfo) => ({
+        ...symbolInfo,
+        location: {
+          ...symbolInfo.location,
+          uri: symbolInfo.location.uri.replace(testWorkspacePath, '<testWorkspacePath>/'),
+        },
+      })),
+    ).toMatchSnapshot();
   });
 });
