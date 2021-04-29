@@ -223,8 +223,11 @@ let find_dirfiles dirs =
     ~init:Cm_Files.empty dirs
   |> Cm_Files.values |> List.map ~f:string_of_cm
 
-let run ({ query; _ } : WorkspaceSymbolParams.t) =
-  let _, build_dir = project_root () in
+let run ({ query; _ } : WorkspaceSymbolParams.t) (rootUri : Uri.t option) =
+  let rootUri =
+    Option.map rootUri ~f:Uri.to_path |> Option.value ~default:"No root uri"
+  in
+  let _, build_dir = project_root ~path:rootUri () in
   let build_dir = Option.value build_dir ~default:"No build dir" in
   let unique_subdirs = unique_subdirs [ build_dir ] in
   let all_files = find_dirfiles unique_subdirs in

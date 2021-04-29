@@ -1,9 +1,11 @@
 open Import
 
-let client_capabilities (state : State.t) =
+let init_params (state : State.t) =
   match state.init with
   | Uninitialized -> assert false
-  | Initialized c -> c
+  | Initialized init -> init
+
+let client_capabilities (state : State.t) = (init_params state).capabilities
 
 let make_error = Jsonrpc.Response.Error.make
 
@@ -156,7 +158,7 @@ let send_diagnostics ?diagnostics rpc doc =
 
 let on_initialize rpc (ip : Lsp.Types.InitializeParams.t) =
   let state : State.t = Server.state rpc in
-  let state = { state with init = Initialized ip.capabilities } in
+  let state = { state with init = Initialized ip } in
   let state =
     match ip.trace with
     | None -> state
@@ -556,8 +558,9 @@ let definition_query (state : State.t) uri position merlin_request =
   let+ result = Document.dispatch_exn doc command in
   location_of_merlin_loc uri result
 
-let workspace_symbol (_state : State.t) (params : WorkspaceSymbolParams.t) =
-  let symbols = Workspace_symbol.run params in
+let workspace_symbol (state : State.t) (params : WorkspaceSymbolParams.t) =
+  let rootUri = (init_params state).rootUri in
+  let symbols = Workspace_symbol.run params rootUri in
   Fiber.return (Some symbols)
 
 let highlight (state : State.t)

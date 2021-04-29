@@ -1,3 +1,3 @@
 open Import
 
-val run : WorkspaceSymbolParams.t -> SymbolInformation.t list
+val run : WorkspaceSymbolParams.t -> Uri.t option -> SymbolInformation.t list

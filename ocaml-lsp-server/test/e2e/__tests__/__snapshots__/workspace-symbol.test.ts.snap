@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`workspace/symbol returns symbols from workspace 1`] = `
+Array [
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 36,
+          "line": 5,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 5,
+        },
+      },
+      "uri": "file:///Users/corentin/Dev/ocaml-lsp/ocaml-lsp-server/test/e2e/workspace_symbol.ml-gen",
+    },
+    "name": "Main",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 34,
+          "line": 1,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 1,
+        },
+      },
+      "uri": "file:///Users/corentin/Dev/ocaml-lsp/ocaml-lsp-server/test/e2e/workspace_symbol.ml-gen",
+    },
+    "name": "Lib",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 5,
+          "line": 0,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 0,
+        },
+      },
+      "uri": "file:///Users/corentin/Dev/ocaml-lsp/ocaml-lsp-server/test/e2e/lib.ml",
+    },
+    "name": "x",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 5,
+          "line": 0,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 0,
+        },
+      },
+      "uri": "file:///Users/corentin/Dev/ocaml-lsp/ocaml-lsp-server/test/e2e/main.ml",
+    },
+    "name": "y",
+  },
+]
+`;

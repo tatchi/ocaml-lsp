@@ -2,7 +2,7 @@ open Import
 
 type init =
   | Uninitialized
-  | Initialized of ClientCapabilities.t
+  | Initialized of InitializeParams.t
 
 type t =
   { store : Document_store.t
