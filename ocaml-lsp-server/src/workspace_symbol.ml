@@ -141,15 +141,14 @@ let unique_subdirs ?(skip = fun _ -> false) dir_list =
   in
   remove_dups (List.fold_left ~f:subdirs ~init:[] dir_list)
 
-let read_cmt cmt_file =
+let read_cmt root_uri cmt_file =
   let filename_from_path (path : string) =
     let parts = String.split_on_char ~sep:'/' path in
     List.last parts |> Option.value ~default:""
   in
   let cmt = Cmt_format.read_cmt cmt_file in
-  let sourcefile =
-    Sys.getcwd () ^ "/" ^ Option.value ~default:"" cmt.cmt_sourcefile
-  in
+  let sourcefile = root_uri ^ Option.value ~default:"" cmt.cmt_sourcefile in
+
   let signatures = cmt_sign cmt in
   signatures
   |> List.fold_left
@@ -243,7 +242,7 @@ let run ({ query; _ } : WorkspaceSymbolParams.t) (rootUri : Uri.t option) =
       match ext with
       | "cmt"
       | "cmti" ->
-        read_cmt file
+        read_cmt rootUri file
       | _ -> [])
   in
   let all_symbols = List.map ~f:load_file all_files |> List.flatten in
