@@ -57,33 +57,15 @@ let symbol_of_signature_item ~sourcefile (signature_item : Types.signature_item)
   let location = Location.create ~uri ~range in
   SymbolInformation.create ~name ~kind ~location ()
 
-let build_roots =
-  (* by increasing order of priority *)
-  [ "_darcs"; ".hg"; ".git"; "jengaroot.ml"; "omakeroot"; "_build"; "_obuild" ]
-
 let find_build_dir path =
   let ( / ) = Filename.concat in
   let files = Sys.readdir path in
-  let _, root =
-    let rec memsuffix x = function
-      | a :: r ->
-        if x = a then
-          Some r
-        else
-          memsuffix x r
-      | [] -> None
-    in
-    Array.fold_left
-      ~f:(fun (roots, found) f ->
-        match memsuffix f roots with
-        | None -> (roots, found)
-        | Some roots -> (roots, Some f))
-      ~init:(build_roots, None) files
-  in
-  match root with
-  | None -> None
-  | Some (("_obuild" | "_build") as dir) -> Some (path / dir)
-  | Some _ -> Some path
+  let build_dir = "_build" in
+  let is_build folder = folder = build_dir in
+  if Array.exists ~f:is_build files then
+    Some (path / build_dir)
+  else
+    None
 
 let project_root ?(path = Sys.getcwd ()) () =
   let ( / ) = Filename.concat in
