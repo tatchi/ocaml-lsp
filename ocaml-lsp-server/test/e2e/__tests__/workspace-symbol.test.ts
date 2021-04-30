@@ -35,7 +35,10 @@ describe("workspace/symbol", () => {
         ...symbolInfo,
         location: {
           ...symbolInfo.location,
-          uri: symbolInfo.location.uri.replace(testWorkspacePath, '<testWorkspacePath>'),
+          uri: symbolInfo.location.uri.replace(
+            testWorkspacePath,
+            "<testWorkspacePath>",
+          ),
         },
       })),
     ).toMatchSnapshot();

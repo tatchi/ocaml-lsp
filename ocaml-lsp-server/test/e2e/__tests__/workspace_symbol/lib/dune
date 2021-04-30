@@ -1,0 +1,4 @@
+(library
+ (public_name lib)
+ (flags :standard -w -32-38-27)
+ (name lib))

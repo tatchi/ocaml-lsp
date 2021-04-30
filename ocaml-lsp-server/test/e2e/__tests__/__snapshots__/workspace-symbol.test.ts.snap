@@ -7,41 +7,41 @@ Array [
     "location": Object {
       "range": Object {
         "end": Object {
-          "character": 36,
-          "line": 5,
+          "character": 23,
+          "line": 1,
         },
         "start": Object {
           "character": 0,
-          "line": 5,
+          "line": 1,
         },
       },
-      "uri": "file://<testWorkspacePath>/workspace_symbol.ml-gen",
+      "uri": "file://<testWorkspacePath>/bin/.main.eobjs/dune__exe.ml-gen",
     },
-    "name": "Main",
+    "name": "A",
   },
   Object {
     "kind": 2,
     "location": Object {
       "range": Object {
         "end": Object {
-          "character": 34,
-          "line": 1,
+          "character": 29,
+          "line": 5,
         },
         "start": Object {
           "character": 0,
-          "line": 1,
+          "line": 5,
         },
       },
-      "uri": "file://<testWorkspacePath>/workspace_symbol.ml-gen",
+      "uri": "file://<testWorkspacePath>/bin/.main.eobjs/dune__exe.ml-gen",
     },
-    "name": "Lib",
+    "name": "Main",
   },
   Object {
     "kind": 12,
     "location": Object {
       "range": Object {
         "end": Object {
-          "character": 5,
+          "character": 7,
           "line": 0,
         },
         "start": Object {
@@ -49,16 +49,322 @@ Array [
           "line": 0,
         },
       },
-      "uri": "file://<testWorkspacePath>/lib.ml",
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
     },
-    "name": "x",
+    "name": "a_x",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 3,
+          "line": 5,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 2,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "A_B",
   },
   Object {
     "kind": 12,
     "location": Object {
       "range": Object {
         "end": Object {
+          "character": 7,
+          "line": 7,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 7,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_m",
+  },
+  Object {
+    "kind": 15,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 12,
+          "line": 14,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 12,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "user",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 7,
+          "line": 16,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 16,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_u",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 9,
+          "line": 18,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 18,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_arr",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 7,
+          "line": 20,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 20,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_m",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 12,
+          "line": 20,
+        },
+        "start": Object {
+          "character": 9,
+          "line": 20,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_n",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 7,
+          "line": 22,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 22,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "a_i",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 36,
+          "line": 26,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 26,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "StringMap",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 25,
+          "line": 27,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 27,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "My_string",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 3,
+          "line": 39,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 29,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "A_Mod",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 3,
+          "line": 43,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 41,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "X_int",
+  },
+  Object {
+    "kind": 2,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 3,
+          "line": 47,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 45,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "Increment",
+  },
+  Object {
+    "kind": 9,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 23,
+          "line": 49,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 49,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "Foo",
+  },
+  Object {
+    "kind": 5,
+    "location": Object {
+      "range": Object {
+        "end": Object {
           "character": 5,
+          "line": 65,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 51,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "stack_of_ints",
+  },
+  Object {
+    "kind": 5,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 5,
+          "line": 65,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 51,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "stack_of_ints",
+  },
+  Object {
+    "kind": 15,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 5,
+          "line": 65,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 51,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "stack_of_ints",
+  },
+  Object {
+    "kind": 15,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 5,
+          "line": 65,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 51,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/bin/a.ml",
+    },
+    "name": "#stack_of_ints",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 10,
           "line": 0,
         },
         "start": Object {
@@ -66,9 +372,1114 @@ Array [
           "line": 0,
         },
       },
-      "uri": "file://<testWorkspacePath>/main.ml",
+      "uri": "file://<testWorkspacePath>/bin/main.ml",
     },
-    "name": "y",
+    "name": "main_y",
+  },
+  Object {
+    "kind": 15,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 47,
+          "line": 39,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 39,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "t",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 27,
+          "line": 42,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 42,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "length",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 47,
+          "line": 45,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 45,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "compare_lengths",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 47,
+          "line": 52,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 52,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "compare_length_with",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 35,
+          "line": 59,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 59,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "cons",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 22,
+          "line": 64,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 64,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "hd",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 27,
+          "line": 69,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 69,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "tl",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 30,
+          "line": 74,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 74,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "nth",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 41,
+          "line": 81,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 81,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "nth_opt",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 28,
+          "line": 89,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 89,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "rev",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 40,
+          "line": 92,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 92,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "init",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 42,
+          "line": 98,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 98,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "append",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 46,
+          "line": 104,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 104,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "rev_append",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 36,
+          "line": 110,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 110,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "concat",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 37,
+          "line": 117,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 117,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "flatten",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 60,
+          "line": 125,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 125,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "equal",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 60,
+          "line": 139,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 139,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "compare",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 42,
+          "line": 158,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 158,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "iter",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 50,
+          "line": 164,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 164,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "iteri",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 42,
+          "line": 171,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 171,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 50,
+          "line": 177,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 177,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "mapi",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 46,
+          "line": 184,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 184,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "rev_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 56,
+          "line": 190,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 190,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "filter_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 54,
+          "line": 197,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 197,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "concat_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 56,
+          "line": 204,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 203,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fold_left_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 55,
+          "line": 210,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 210,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fold_left",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 56,
+          "line": 215,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 215,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fold_right",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 60,
+          "line": 224,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 224,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "iter2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 60,
+          "line": 231,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 231,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "map2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 64,
+          "line": 238,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 238,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "rev_map2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 58,
+          "line": 245,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 244,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fold_left2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 58,
+          "line": 253,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 252,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fold_right2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 45,
+          "line": 264,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 264,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "for_all",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 44,
+          "line": 271,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 271,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "exists",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 63,
+          "line": 278,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 278,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "for_all2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 62,
+          "line": 284,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 284,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "exists2",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 31,
+          "line": 290,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 290,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "mem",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 32,
+          "line": 295,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 295,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "memq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 40,
+          "line": 304,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 304,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "find",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 51,
+          "line": 311,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 311,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "find_opt",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 56,
+          "line": 319,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 319,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "find_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 47,
+          "line": 326,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 326,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "filter",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 49,
+          "line": 332,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 332,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "find_all",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 55,
+          "line": 336,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 336,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "filteri",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 60,
+          "line": 343,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 343,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "partition",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 77,
+          "line": 351,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 351,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "partition_map",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 38,
+          "line": 370,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 370,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "assoc",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 49,
+          "line": 379,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 379,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "assoc_opt",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 37,
+          "line": 389,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 389,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "assq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 48,
+          "line": 394,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 394,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "assq_opt",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 44,
+          "line": 400,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 400,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "mem_assoc",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 43,
+          "line": 405,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 405,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "mem_assq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 57,
+          "line": 410,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 410,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "remove_assoc",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 56,
+          "line": 416,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 416,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "remove_assq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 47,
+          "line": 425,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 425,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "split",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 50,
+          "line": 431,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 431,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "combine",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 50,
+          "line": 443,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 443,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "sort",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 57,
+          "line": 459,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 459,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "stable_sort",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 55,
+          "line": 468,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 468,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "fast_sort",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 55,
+          "line": 473,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 473,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "sort_uniq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 62,
+          "line": 478,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 478,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "merge",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 32,
+          "line": 490,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 490,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "to_seq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 32,
+          "line": 495,
+        },
+        "start": Object {
+          "character": 0,
+          "line": 495,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "of_seq",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 2,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "lib_x",
+  },
+  Object {
+    "kind": 12,
+    "location": Object {
+      "range": Object {
+        "end": Object {
+          "character": 18,
+          "line": 4,
+        },
+        "start": Object {
+          "character": 4,
+          "line": 4,
+        },
+      },
+      "uri": "file://<testWorkspacePath>/lib/lib.ml",
+    },
+    "name": "lib_private_fn",
   },
 ]
 `;

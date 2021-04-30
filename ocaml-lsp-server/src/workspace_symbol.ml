@@ -142,25 +142,12 @@ let unique_subdirs ?(skip = fun _ -> false) dir_list =
   remove_dups (List.fold_left ~f:subdirs ~init:[] dir_list)
 
 let read_cmt root_uri cmt_file =
-  let filename_from_path (path : string) =
-    let parts = String.split_on_char ~sep:'/' path in
-    List.last parts |> Option.value ~default:""
-  in
   let cmt = Cmt_format.read_cmt cmt_file in
-  let sourcefile = root_uri ^ "/" ^ Option.value ~default:"" cmt.cmt_sourcefile in
-
+  let sourcefile =
+    root_uri ^ "/" ^ Option.value ~default:"" cmt.cmt_sourcefile
+  in
   let signatures = cmt_sign cmt in
-  signatures
-  |> List.fold_left
-       ~f:(fun acc signature_item ->
-         let loc = loc_of_sig_item signature_item in
-         let pos_filename = filename_from_path loc.loc_start.pos_fname in
-         let filename = filename_from_path sourcefile in
-         if pos_filename = filename then
-           symbol_of_signature_item ~sourcefile signature_item :: acc
-         else
-           acc)
-       ~init:[]
+  signatures |> List.map ~f:(symbol_of_signature_item ~sourcefile)
 
 type cm_file =
   | Cmt of string
