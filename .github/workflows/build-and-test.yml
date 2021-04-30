@@ -67,6 +67,4 @@ jobs:
 
       - name: Run the template integration tests
         run: opam exec -- make test-e2e
-        if: always()
-        continue-on-error: ${{ matrix.os == 'windows-latest' }}
-        timeout-minutes: 1
+        shell: bash
