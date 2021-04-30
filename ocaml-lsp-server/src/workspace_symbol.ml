@@ -147,7 +147,7 @@ let read_cmt root_uri cmt_file =
     List.last parts |> Option.value ~default:""
   in
   let cmt = Cmt_format.read_cmt cmt_file in
-  let sourcefile = root_uri ^ Option.value ~default:"" cmt.cmt_sourcefile in
+  let sourcefile = root_uri ^ "/" ^ Option.value ~default:"" cmt.cmt_sourcefile in
 
   let signatures = cmt_sign cmt in
   signatures
