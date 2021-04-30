@@ -34,6 +34,9 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: yarn
+        run: which yarn
+
       - name: Install npm packages
         run: yarn --frozen-lockfile
         working-directory: ocaml-lsp-server/test/e2e
@@ -67,4 +70,3 @@ jobs:
 
       - name: Run the template integration tests
         run: opam exec -- make test-e2e
-        shell: bash
