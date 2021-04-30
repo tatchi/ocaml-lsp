@@ -159,7 +159,7 @@ let string_of_cm cm =
   | Cmti f ->
     f
 
-module Cm_Files = Map.Make (struct
+module Cm_files = Map.Make (struct
   type t = string
 
   let compare a b = Stdlib.compare a b |> Ordering.of_int
@@ -196,18 +196,18 @@ let find_dirfiles dirs =
              let modul, ext = split_filename file in
              let path = dir ^ "/" ^ file in
              match ext with
-             | "cmt" -> Cm_Files.set acc modul (Cmt path)
+             | "cmt" -> Cm_files.set acc modul (Cmt path)
              | "cmti" -> (
-               let current_file = Cm_Files.find acc modul in
+               let current_file = Cm_files.find acc modul in
                let cmti_file = Cmti path in
                match current_file with
-               | None -> Cm_Files.set acc modul cmti_file
+               | None -> Cm_files.set acc modul cmti_file
                | Some current_file ->
-                 Cm_Files.set acc modul (choose_file current_file cmti_file))
+                 Cm_files.set acc modul (choose_file current_file cmti_file))
              | _ -> acc)
            ~init:files)
-    ~init:Cm_Files.empty dirs
-  |> Cm_Files.values |> List.map ~f:string_of_cm
+    ~init:Cm_files.empty dirs
+  |> Cm_files.values |> List.map ~f:string_of_cm
 
 let run ({ query; _ } : WorkspaceSymbolParams.t) (rootUri : Uri.t option) =
   let rootUri =
