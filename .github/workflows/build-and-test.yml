@@ -18,6 +18,13 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
+        include:
+          - os: macos-latest
+            test-e2e: opam exec -- make test-e2e
+          - os: ubuntu-latest
+            test-e2e: opam exec -- make test-e2e
+          - os: windows-latest
+            test-e2e: "& $env:CYGWIN_ROOT\\bin\\ocaml-env exec -- make test-e2e"
         ocaml-compiler:
           - 4.12.x
 
@@ -69,4 +76,4 @@ jobs:
         timeout-minutes: 1
 
       - name: Run the template integration tests
-        run: opam exec -- make test-e2e
+        run: ${{matrix.test-e2e}}
