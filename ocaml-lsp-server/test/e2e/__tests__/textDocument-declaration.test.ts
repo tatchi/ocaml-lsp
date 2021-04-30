@@ -54,7 +54,7 @@ describe("textDocument/declaration", () => {
   }
 
   it("returns location of a declaration", async () => {
-    child_process.execSync("dune build", { cwd: testWorkspacePath });
+    // child_process.execSync("dune build", { cwd: testWorkspacePath });
 
     await openDocument(createPathForFile("main.ml"));
 
