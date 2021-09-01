@@ -4,7 +4,7 @@
  (name lsp)
  (public_name lsp)
  (libraries jsonrpc ppx_yojson_conv_lib result stdune threads.posix uutf
-   yojson)
+   yojson uri)
  (lint
   (pps ppx_yojson_conv)))
 
