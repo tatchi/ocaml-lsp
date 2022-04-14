@@ -44,7 +44,7 @@ jobs:
         working-directory: ocaml-lsp-server/test/e2e
 
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
+        uses: dra27/setup-ocaml@pin-git
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
