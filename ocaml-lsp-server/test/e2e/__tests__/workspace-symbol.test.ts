@@ -34,7 +34,7 @@ let createWorkspaces = (names: string[]) => {
 };
 
 let buildProject = (cwd: string): void => {
-  child_process.execSync("dune build --root . @check", { cwd: cwd });
+  child_process.execSync("dune exec -- dune build --root . @check", { cwd: cwd });
 };
 
 describe("workspace/symbol", () => {
@@ -194,8 +194,8 @@ describe("workspace/symbol", () => {
       workspaceFolders: [workspaceA.folder, workspaceB.folder],
     });
 
-    child_process.execSync("dune clean", { cwd: workspaceA.path });
-    child_process.execSync("dune clean", { cwd: workspaceB.path });
+    child_process.execSync("dune exec -- dune clean", { cwd: workspaceA.path });
+    child_process.execSync("dune exec -- dune clean", { cwd: workspaceB.path });
 
     type StarNotificationHandlerParams = Parameters<Protocol.StarNotificationHandler>;
     let receivedNotification: Promise<{
