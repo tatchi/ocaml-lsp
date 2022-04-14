@@ -15,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-latest
-          - ubuntu-latest
+          # - macos-latest
+          # - ubuntu-latest
           - windows-latest
         ocaml-compiler:
           - 4.14.x
@@ -24,6 +24,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Install bun
+        run: curl -fsSL https://bun.sh/install | bash
+        shell: bash
+
       - name: Set git to use LF
         run: |
           git config --global core.autocrlf false

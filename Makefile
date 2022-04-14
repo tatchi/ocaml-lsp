@@ -48,7 +48,7 @@ check:
 
 .PHONY: test-e2e
 test-e2e: $(TEST_E2E_DIR)/node_modules ## Run the template integration tests
-	dune build @install && cd $(TEST_E2E_DIR) && dune exec -- node ./node_modules/.bin/jest
+	dune build @install && cd $(TEST_E2E_DIR) && dune exec -- bun test
 
 
 .PHONY: promote-e2e
