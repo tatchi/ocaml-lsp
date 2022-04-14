@@ -24,10 +24,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Install bun
-        run: curl -fsSL https://bun.sh/install | bash
-        shell: bash
-
       - name: Set git to use LF
         run: |
           git config --global core.autocrlf false
@@ -38,6 +34,9 @@ jobs:
         with:
           submodules: true
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6
       - name: Use latest LTS Node.js release
         uses: actions/setup-node@v2
         with:
@@ -54,6 +53,13 @@ jobs:
 
       - name: Install opam packages
         run: opam install .
+
+      - name: dune exec pnpm
+        run: opam exec -- dune exec -- pnpm --version
+        continue-on-error: true
+
+      - name: dune exec yarn
+        run: opam exec -- dune exec -- yarn --version
 
       # the makefile explains why we don't use test dependencies
       - name: Install test dependencies
