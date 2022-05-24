@@ -59,6 +59,14 @@ jobs:
         run: opam exec -- make fmt
         if: ${{ matrix.os == 'ubuntu-latest' && always() }}
 
+      - name: Install dum
+        if: runner.os == 'Windows'
+        run: curl -L -O https://github.com/egoist/dum/releases/download/v0.1.19/dum-x86_64-pc-windows-msvc.zip
+
+      - name: unzip
+        if: runner.os == 'Windows'
+        run: unzip dum-x86_64-pc-windows-msvc.zip
+
       - name: Run build
         run: opam exec -- make all
 
@@ -66,4 +74,11 @@ jobs:
         run: opam exec -- make test-ocaml
 
       - name: Run the template integration tests
+        if: runner.os == 'Windows'
+        run: |
+          opam exec -- dune build @install
+          opam exec -- dune exec -- ./dum.exe -c ocaml-lsp-server/test/e2e test
+
+      - name: Run the template integration tests
+        if: runner.os != 'Windows'
         run: opam exec -- make test-e2e
