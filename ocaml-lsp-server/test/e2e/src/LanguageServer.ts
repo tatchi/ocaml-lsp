@@ -28,13 +28,9 @@ let serverPath = path.join(
 
 export type LanguageServer = rpc.MessageConnection;
 
-let prefix = process.platform === "win32" ? "file:///" : "file://";
+export const toURI = (s: string) => URI.file(s).toString();
 
-export const toURI = (s) => {
-  return prefix + s;
-};
-
-export const start = (opts?: cp.SpawnOptions) => {
+export const start = (opts?: cp.SpawnOptions): LanguageServer => {
   let env = { ...process.env };
   env.OCAMLLSP_TEST = "true";
   opts = opts || { env: env };
@@ -53,7 +49,7 @@ export const start = (opts?: cp.SpawnOptions) => {
 
   connection.listen();
 
-  return connection as LanguageServer;
+  return connection;
 };
 
 export const startAndInitialize = async (
