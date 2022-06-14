@@ -28,10 +28,8 @@ let serverPath = path.join(
 
 export type LanguageServer = rpc.MessageConnection;
 
-let prefix = process.platform === "win32" ? "file:///" : "file://";
-
-export const toURI = (s) => {
-  return prefix + s;
+export const toURI = (s: string) => {
+  return URI.file(s).toString();
 };
 
 export const start = (opts?: cp.SpawnOptions) => {
