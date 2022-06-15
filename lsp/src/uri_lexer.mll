@@ -11,7 +11,7 @@ rule path buff= parse
       { Buffer.add_char buff (Char.lowercase_ascii driver_letter); Buffer.add_char buff ':'; path1 buff lexbuf }
 | [^ '/'] as c { Buffer.add_char buff '/'; Buffer.add_char buff c; path1 buff lexbuf }
 | _ as c { Buffer.add_char buff c ; path1 buff lexbuf }
-| eof { Buffer.contents buff }
+| eof { Buffer.add_char buff '/' ; Buffer.contents buff }
 and path1 buf = parse
 (* | '\\' { Buffer.add_char buf '/' ; path1 buf lexbuf } *)
 (* | "%5" ['c' 'C'] { Buffer.add_char buf '/' ; path1 buf lexbuf }

@@ -16,15 +16,22 @@ let test_uri_parsing =
   fun uris -> run_with_modes (fun () -> List.iter test uris)
 
 let%expect_test "test uri parsing" =
-  test_uri_parsing [ "file:///Users/foo"; "file:///c:/Users/foo" ];
+  test_uri_parsing
+    [ "file:///Users/foo"
+    ; "file:///c:/Users/foo"
+    ; "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp"
+    ];
   [%expect
     {|
     Unix:
     file:///Users/foo -> /Users/foo
     file:///c:/Users/foo -> c:/Users/foo
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> /
     Windows:
     file:///Users/foo -> Users/foo
-    file:///c:/Users/foo -> c:/Users/foo |}]
+    file:///c:/Users/foo -> c:/Users/foo 
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> /
+    |}]
 
 let uri_of_path =
   let test path =
@@ -113,4 +120,19 @@ let%expect_test "of_path -> to_string" =
     c:\win/path -> file:///c%3A%5Cwin/path
     a.file -> file:///a.file
     /Users/jrieken/Code/_samples/18500/Mödel + Other Thîngß/model.js -> file:///Users/jrieken/Code/_samples/18500/M%C3%B6del%20%2B%20Other%20Th%C3%AEng%C3%9F/model.js
+  |}]
+
+let%expect_test "of_string -> to_string" =
+  let paths = [ "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp" ] in
+  let of_path_to_path =
+    let test s =
+      let uri = Uri0.t_of_yojson (`String s) in
+      Printf.printf "%s -> %s\n" s (Uri0.to_string uri)
+    in
+    fun uris -> List.iter test uris
+  in
+  of_path_to_path paths;
+  [%expect
+    {|
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp/
   |}]
