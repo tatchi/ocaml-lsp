@@ -123,7 +123,11 @@ let%expect_test "of_path -> to_string" =
   |}]
 
 let%expect_test "of_string -> to_string" =
-  let paths = [ "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp" ] in
+  let paths =
+    [ "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp"
+    ; "file:///c:/Source/Z%C3%BCrich%20or%20Zurich%20(%CB%88zj%CA%8A%C9%99r%C9%AAk,/Code/resources/app/plugins/c%23/plugin.json"
+    ]
+  in
   let of_path_to_path =
     let test s =
       let uri = Uri0.t_of_yojson (`String s) in
@@ -135,4 +139,25 @@ let%expect_test "of_string -> to_string" =
   [%expect
     {|
     file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp/
+    file:///c:/Source/Z%C3%BCrich%20or%20Zurich%20(%CB%88zj%CA%8A%C9%99r%C9%AAk,/Code/resources/app/plugins/c%23/plugin.json -> file:///c%3A/Source/Z%C3%BCrich%20or%20Zurich%20%28%CB%88zj%CA%8A%C9%99r%C9%AAk%2C/Code/resources/app/plugins/c%23/plugin.json
+  |}]
+
+let%expect_test "of_string -> to_path" =
+  let paths =
+    [ "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp"
+    ; "file:///c%3A/Source/Z%C3%BCrich%20or%20Zurich%20%28%CB%88zj%CA%8A%C9%99r%C9%AAk%2C/Code/resources/app/plugins/c%23/plugin.json"
+    ]
+  in
+  let of_path_to_path =
+    let test s =
+      let uri = Uri0.t_of_yojson (`String s) in
+      Printf.printf "%s -> %s\n" s (Uri0.to_path uri)
+    in
+    fun uris -> List.iter test uris
+  in
+  of_path_to_path paths;
+  [%expect
+    {|
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> /
+    file:///c%3A/Source/Z%C3%BCrich%20or%20Zurich%20%28%CB%88zj%CA%8A%C9%99r%C9%AAk%2C/Code/resources/app/plugins/c%23/plugin.json -> c:/Source/Zürich or Zurich (ˈzjʊərɪk,/Code/resources/app/plugins/c#/plugin.json
   |}]

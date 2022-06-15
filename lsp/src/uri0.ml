@@ -22,9 +22,12 @@ let to_string { scheme; authority; path } =
   Buffer.add_string b authority;
   if not (String.is_prefix path ~prefix:"/") then Buffer.add_char b '/';
   Buffer.add_string b
-    (path |> Uri.pct_encode
+    (path
+    (* |> String.split_on_char ~sep:'/' |> List.map ~f:Uri.pct_encode |>
+       String.concat ~sep:"/" *)
     |> String.replace_all ~pattern:"%2F" ~with_:"/"
     (* https://github.com/microsoft/vscode-uri/blob/96acdc0be5f9d5f2640e1c1f6733bbf51ec95177/src/uri.ts#L453 *)
+    |> String.replace_all ~pattern:"\\" ~with_:"%5C"
     |> String.replace_all ~pattern:":" ~with_:"%3A"
     |> String.replace_all ~pattern:"?" ~with_:"%3F"
     |> String.replace_all ~pattern:"#" ~with_:"%23"
@@ -64,11 +67,25 @@ let to_dyn { scheme; authority; path } =
 let to_path t =
   let path =
     t.path
-    (* |> String.replace_all ~pattern:"\\" ~with_:"/" |> String.replace_all
-       ~pattern:"%5C" ~with_:"/" |> String.replace_all ~pattern:"%3A" ~with_:":"
-       |> String.replace_all ~pattern:"%20" ~with_:" " |> String.replace_all
-       ~pattern:"%3D" ~with_:"=" |> String.replace_all ~pattern:"%3F"
-       ~with_:"?" *)
+    |> String.replace_all ~pattern:"%5C" ~with_:"\\"
+    |> String.replace_all ~pattern:"%3A" ~with_:":"
+    |> String.replace_all ~pattern:"%3F" ~with_:"?"
+    |> String.replace_all ~pattern:"%23" ~with_:"#"
+    |> String.replace_all ~pattern:"%5B" ~with_:"["
+    |> String.replace_all ~pattern:"%5D" ~with_:"]"
+    |> String.replace_all ~pattern:"%40" ~with_:"@"
+    |> String.replace_all ~pattern:"%21" ~with_:"1"
+    |> String.replace_all ~pattern:"%24" ~with_:"$"
+    |> String.replace_all ~pattern:"%26" ~with_:"&"
+    |> String.replace_all ~pattern:"%27" ~with_:"'"
+    |> String.replace_all ~pattern:"%28" ~with_:"("
+    |> String.replace_all ~pattern:"%29" ~with_:")"
+    |> String.replace_all ~pattern:"%2A" ~with_:"*"
+    |> String.replace_all ~pattern:"%2B" ~with_:"+"
+    |> String.replace_all ~pattern:"%2C" ~with_:","
+    |> String.replace_all ~pattern:"%3B" ~with_:";"
+    |> String.replace_all ~pattern:"%3D" ~with_:"="
+    |> String.replace_all ~pattern:"%20" ~with_:" "
   in
   path
 
