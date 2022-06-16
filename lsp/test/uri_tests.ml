@@ -68,12 +68,28 @@ let%expect_test "test of_string -> to_path" =
     in
     fun uris -> run_with_modes (fun () -> List.iter test uris)
   in
-  test_of_path [ "file:///c:/test/me"; "file://shares/files/c%23/p.cs" ];
-  [%expect {|
+  test_of_path
+    [ "file:///c:/test/me"
+    ; "file://shares/files/c%23/p.cs"
+    ; "file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp"
+    ; "file:///c:/Source/Z%C3%BCrich%20or%20Zurich%20(%CB%88zj%CA%8A%C9%99r%C9%AAk,/Code/resources/app/plugins/c%23/plugin.json"
+    ; "file:///c:/test %25/path"
+    ; "file:?q"
+    ];
+  [%expect
+    {|
     Unix:
     file:///c:/test/me -> c:/test/me
-    file://shares/files/c%23/p.cs -> /files/c%23/p.cs
+    file://shares/files/c%23/p.cs -> //shares/files/c#/p.cs
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> /
+    file:///c:/Source/Z%C3%BCrich%20or%20Zurich%20(%CB%88zj%CA%8A%C9%99r%C9%AAk,/Code/resources/app/plugins/c%23/plugin.json -> c:/Source/Zürich or Zurich (ˈzjʊərɪk,/Code/resources/app/plugins/c#/plugin.json
+    file:///c:/test %25/path -> c:/test %/path
+    file:?q -> /
     Windows:
     file:///c:/test/me -> c:\test\me
-    file://shares/files/c%23/p.cs -> \files\c%23\p.cs
+    file://shares/files/c%23/p.cs -> \\shares\files\c#\p.cs
+    file://%2Fhome%2Fticino%2Fdesktop%2Fcpluscplus%2Ftest.cpp -> \
+    file:///c:/Source/Z%C3%BCrich%20or%20Zurich%20(%CB%88zj%CA%8A%C9%99r%C9%AAk,/Code/resources/app/plugins/c%23/plugin.json -> c:\Source\Zürich or Zurich (ˈzjʊərɪk,\Code\resources\app\plugins\c#\plugin.json
+    file:///c:/test %25/path -> c:\test %\path
+    file:?q -> \
     |}]

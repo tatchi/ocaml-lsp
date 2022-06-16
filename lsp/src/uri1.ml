@@ -75,5 +75,5 @@ let of_string s =
   let group re n = Re.Group.get_opt re n |> Option.value ~default:"" in
   let scheme = group res 2 in
   let authority = group res 4 in
-  let path = group res 5 in
+  let path = group res 5 |> Uri.pct_decode in
   { scheme; authority; path }
