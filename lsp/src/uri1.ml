@@ -4,10 +4,8 @@ module Private = struct
   let win32 = ref Sys.win32
 end
 
-type scheme = File
-
 type t =
-  { scheme : scheme
+  { scheme : string
   ; path : string
   }
 
@@ -24,13 +22,15 @@ let slash_to_backslash =
     | _ as c -> c)
 
 let of_path path =
+  (* TODO:
+     https://github.com/microsoft/vscode-uri/blob/96acdc0be5f9d5f2640e1c1f6733bbf51ec95177/src/uri.ts#L315 *)
   let path =
     if String.length path = 0 then "/"
     else
       let path = if !Private.win32 then backslash_to_slash path else path in
       if path.[0] <> '/' then "/" ^ path else path
   in
-  { scheme = File; path }
+  { scheme = "file"; path }
 
 let to_path t =
   let path = t.path in
@@ -51,3 +51,14 @@ let to_path t =
       else path
   in
   if !Private.win32 then slash_to_backslash path else path
+
+let of_string s =
+  let re =
+    Re.Perl.re "^(([^:/?#]+?):)?(//([^/?#]*))?([^?#]*)"
+    |> Re.compile
+  in
+  let res = Re.exec re s in
+  let fmt = Format.str_formatter in
+  Re.Group.pp fmt res;
+  Format.pp_close_box fmt ();
+  Format.flush_str_formatter ()
