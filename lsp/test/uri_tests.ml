@@ -27,6 +27,7 @@ let%expect_test "test of_path -> to_path" =
     ; ""
     ; "a.file"
     ; "\\\\shäres\\path\\c#\\plugin.json"
+    ; "//shares/files/c%23/p.cs"
     ; "c:\\test with %25\\path"
     ];
   [%expect
@@ -42,6 +43,7 @@ let%expect_test "test of_path -> to_path" =
      -> /
     a.file -> /a.file
     \\shäres\path\c#\plugin.json -> /\\shäres\path\c#\plugin.json
+    //shares/files/c%23/p.cs -> //shares/files/c%23/p.cs
     c:\test with %25\path -> c:\test with %25\path
     Windows:
     c:/win/path -> c:\win\path
@@ -54,5 +56,24 @@ let%expect_test "test of_path -> to_path" =
      -> \
     a.file -> \a.file
     \\shäres\path\c#\plugin.json -> \\shäres\path\c#\plugin.json
+    //shares/files/c%23/p.cs -> \\shares\files\c%23\p.cs
     c:\test with %25\path -> c:\test with %25\path
+    |}]
+
+let%expect_test "test of_string -> to_path" =
+  let test_of_path =
+    let test s =
+      let uri = Uri.of_string s in
+      Printf.printf "%s -> %s\n" s (Uri.to_path uri)
+    in
+    fun uris -> run_with_modes (fun () -> List.iter test uris)
+  in
+  test_of_path [ "file:///c:/test/me"; "file://shares/files/c%23/p.cs" ];
+  [%expect {|
+    Unix:
+    file:///c:/test/me -> c:/test/me
+    file://shares/files/c%23/p.cs -> /files/c%23/p.cs
+    Windows:
+    file:///c:/test/me -> c:\test\me
+    file://shares/files/c%23/p.cs -> \files\c%23\p.cs
     |}]

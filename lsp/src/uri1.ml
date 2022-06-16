@@ -6,6 +6,7 @@ end
 
 type t =
   { scheme : string
+  ; authority : string
   ; path : string
   }
 
@@ -22,21 +23,34 @@ let slash_to_backslash =
     | _ as c -> c)
 
 let of_path path =
-  (* TODO:
-     https://github.com/microsoft/vscode-uri/blob/96acdc0be5f9d5f2640e1c1f6733bbf51ec95177/src/uri.ts#L315 *)
-  let path =
-    if String.length path = 0 then "/"
-    else
-      let path = if !Private.win32 then backslash_to_slash path else path in
-      if path.[0] <> '/' then "/" ^ path else path
+  let path = if !Private.win32 then backslash_to_slash path else path in
+  let path, authority =
+    let len = String.length path in
+    if len = 0 then ("/", "") (* TODO: use String.is_prefix or start_with? *)
+    else if len > 1 && path.[0] = '/' && path.[1] = '/' then (
+      let idx = String.index_from_opt path 2 '/' in
+      match idx with
+      | None -> ("/", String.sub path ~pos:2 ~len:(len - 2))
+      | Some i ->
+        let authority = String.sub path ~pos:2 ~len:(i - 2) in
+        let path =
+          let path = String.sub path ~pos:i ~len:(len - i) in
+          if path = "" then "/" else path
+        in
+        (path, authority))
+    else (path, "")
   in
-  { scheme = "file"; path }
+  let path = if path.[0] <> '/' then "/" ^ path else path in
+  (* Printf.printf "scheme: %s - authority: %s - path: %s\n" "file" authority path; *)
+  { scheme = "file"; authority; path }
 
-let to_path t =
-  let path = t.path in
+let to_path { path; authority; scheme } =
   let path =
-    if String.length path = 0 then "/"
-    else if String.length path < 3 then path
+    let len = String.length path in
+    if len = 0 then "/"
+    else if authority <> "" && len > 1 && scheme = "file" then
+      "//" ^ authority ^ path
+    else if len < 3 then path
     else
       let c0 = path.[0] in
       let c1 = path.[1] in
@@ -54,11 +68,12 @@ let to_path t =
 
 let of_string s =
   let re =
-    Re.Perl.re "^(([^:/?#]+?):)?(//([^/?#]*))?([^?#]*)"
+    Re.Perl.re "^(([^:/?#]+?):)?(\\/\\/([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
     |> Re.compile
   in
   let res = Re.exec re s in
-  let fmt = Format.str_formatter in
-  Re.Group.pp fmt res;
-  Format.pp_close_box fmt ();
-  Format.flush_str_formatter ()
+  let group re n = Re.Group.get_opt re n |> Option.value ~default:"" in
+  let scheme = group res 2 in
+  let authority = group res 4 in
+  let path = group res 5 in
+  { scheme; authority; path }
