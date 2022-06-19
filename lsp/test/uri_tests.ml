@@ -93,3 +93,20 @@ let%expect_test "test of_string -> to_path" =
     file:///c:/test %25/path -> c:\test %\path
     file:?q -> \
     |}]
+
+let%expect_test "test of_path -> to_string" =
+  let test_of_path =
+    let test s =
+      let uri = Uri.of_path s in
+      Printf.printf "%s -> %s\n" s (Uri.to_string uri)
+    in
+    fun uris -> List.iter test uris
+  in
+  test_of_path [ "c:/win/path"; "C:/win/path"; "c:/win/path/"; "/c:/win/path" ];
+  [%expect
+    {|
+    c:/win/path -> file:///c:/win/path
+    C:/win/path -> file:///c:/win/path
+    c:/win/path/ -> file:///c:/win/path/
+    /c:/win/path -> file:///c:/win/path
+    |}]

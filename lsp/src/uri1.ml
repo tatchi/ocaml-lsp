@@ -27,7 +27,7 @@ let of_path path =
   let path, authority =
     let len = String.length path in
     if len = 0 then ("/", "") (* TODO: use String.is_prefix or start_with? *)
-    else if len > 1 && path.[0] = '/' && path.[1] = '/' then (
+    else if len > 1 && path.[0] = '/' && path.[1] = '/' then
       let idx = String.index_from_opt path 2 '/' in
       match idx with
       | None -> ("/", String.sub path ~pos:2 ~len:(len - 2))
@@ -37,11 +37,12 @@ let of_path path =
           let path = String.sub path ~pos:i ~len:(len - i) in
           if path = "" then "/" else path
         in
-        (path, authority))
+        (path, authority)
     else (path, "")
   in
   let path = if path.[0] <> '/' then "/" ^ path else path in
-  (* Printf.printf "scheme: %s - authority: %s - path: %s\n" "file" authority path; *)
+  (* Printf.printf "scheme: %s - authority: %s - path: %s\n" "file" authority
+     path; *)
   { scheme = "file"; authority; path }
 
 let to_path { path; authority; scheme } =
@@ -60,6 +61,7 @@ let to_path { path; authority; scheme } =
         && ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z'))
         && c2 = ':'
       then
+        (* Char.escaped ? *)
         String.make 1 (Char.lowercase_ascii c1)
         ^ String.sub path ~pos:2 ~len:(String.length path - 2)
       else path
@@ -77,3 +79,37 @@ let of_string s =
   let authority = group res 4 in
   let path = group res 5 |> Uri.pct_decode in
   { scheme; authority; path }
+
+let to_string { scheme; authority; path } =
+  let res = ref "" in
+
+  if scheme <> "" then res := scheme ^ ":";
+
+  if authority = "file" || scheme = "file" then res := !res ^ "//";
+
+  (*TODO: handle authority *)
+
+  (*TODO: needed ? *)
+  if path <> "" then (
+    let value = ref path in
+    let len = String.length path in
+    (*TODO: should we use charCode instead ? *)
+    (if len >= 3 && path.[0] = '/' && path.[2] = ':' then (
+     let code = path.[1] in
+     if code >= 'A' && code <= 'Z' then
+       value :=
+         "/"
+         ^ (String.make 1 code |> String.lowercase_ascii)
+         ^ ":"
+         ^ String.sub path ~pos:3 ~len:(len - 3))
+    else if len >= 2 && path.[1] = ':' then
+      let code = path.[0] in
+      if code >= 'A' && code <= 'Z' then
+        value :=
+          "/"
+          ^ (String.make 1 code |> String.lowercase_ascii)
+          ^ ":"
+          ^ String.sub path ~pos:2 ~len:(len - 2));
+    res := !res ^ !value);
+
+  !res
