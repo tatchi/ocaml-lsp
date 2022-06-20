@@ -4,51 +4,130 @@ module Private = struct
   let win32 = ref Sys.win32
 end
 
-type t = Uri_lexer.t =
-  { scheme : string option
+type t =
+  { scheme : string
   ; authority : string
   ; path : string
   }
 
-let t_of_yojson json = Json.Conv.string_of_yojson json |> Uri_lexer.of_string
+let backslash_to_slash =
+  String.map ~f:(function
+    | '\\' -> '/'
+    | _ as c -> c)
+
+let slash_to_backslash =
+  String.map ~f:(function
+    | '/' -> '\\'
+    | _ as c -> c)
+
+let of_path path =
+  let path = if !Private.win32 then backslash_to_slash path else path in
+  let path, authority =
+    let len = String.length path in
+    if len = 0 then ("/", "") (* TODO: use String.is_prefix or start_with? *)
+    else if len > 1 && path.[0] = '/' && path.[1] = '/' then
+      let idx = String.index_from_opt path 2 '/' in
+      match idx with
+      | None -> ("/", String.sub path ~pos:2 ~len:(len - 2))
+      | Some i ->
+        let authority = String.sub path ~pos:2 ~len:(i - 2) in
+        let path =
+          let path = String.sub path ~pos:i ~len:(len - i) in
+          if path = "" then "/" else path
+        in
+        (path, authority)
+    else (path, "")
+  in
+  let path = if path.[0] <> '/' then "/" ^ path else path in
+  (* Printf.printf "scheme: %s - authority: %s - path: %s\n" "file" authority
+     path; *)
+  { scheme = "file"; authority; path }
+
+let to_path { path; authority; scheme } =
+  let path =
+    let len = String.length path in
+    if len = 0 then "/"
+    else if authority <> "" && len > 1 && scheme = "file" then
+      "//" ^ authority ^ path
+    else if len < 3 then path
+    else
+      let c0 = path.[0] in
+      let c1 = path.[1] in
+      let c2 = path.[2] in
+      if
+        c0 = '/'
+        && ((c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z'))
+        && c2 = ':'
+      then
+        (* Char.escaped ? *)
+        String.make 1 (Char.lowercase_ascii c1)
+        ^ String.sub path ~pos:2 ~len:(String.length path - 2)
+      else path
+  in
+  if !Private.win32 then slash_to_backslash path else path
+
+let of_string s =
+  let re =
+    Re.Perl.re "^(([^:/?#]+?):)?(\\/\\/([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+    |> Re.compile
+  in
+  let res = Re.exec re s in
+  let group re n = Re.Group.get_opt re n |> Option.value ~default:"" in
+  let scheme = group res 2 in
+  let authority = group res 4 in
+  let path = group res 5 |> Uri.pct_decode in
+  { scheme; authority; path }
+
+let encode ?(allow_slash = false) s =
+  let allowed_chars = if allow_slash then "/" else "" in
+  Uri.pct_encode ~component:(`Custom (`Generic, allowed_chars, "")) s
+
+(* let _encode s = let buff = Buffer.create (String.length s) in String.iter
+   ~f:(function (*'a' .. 'z' | 'A' .. 'Z' | '1' .. '9' | '-' | '.' | '_' | '~'
+   *) | '/' as c -> Buffer.add_char buff c | c -> Buffer.add_string buff
+   (Uri.pct_encode ~component:`Generic (String.make 1 c))) s; Buffer.contents
+   buff *)
 
 let to_string { scheme; authority; path } =
-  let b = Buffer.create 64 in
-  scheme
-  |> Option.iter (fun s ->
-         Buffer.add_string b s;
-         Buffer.add_char b ':');
-  Buffer.add_string b "//";
-  Buffer.add_string b authority;
-  if not (String.is_prefix path ~prefix:"/") then Buffer.add_char b '/';
-  Buffer.add_string b
-    (path
-    (* |> String.split_on_char ~sep:'/' |> List.map ~f:Uri.pct_encode |>
-       String.concat ~sep:"/" *)
-    |> String.replace_all ~pattern:"%2F" ~with_:"/"
-    (* https://github.com/microsoft/vscode-uri/blob/96acdc0be5f9d5f2640e1c1f6733bbf51ec95177/src/uri.ts#L453 *)
-    |> String.replace_all ~pattern:"\\" ~with_:"%5C"
-    |> String.replace_all ~pattern:":" ~with_:"%3A"
-    |> String.replace_all ~pattern:"?" ~with_:"%3F"
-    |> String.replace_all ~pattern:"#" ~with_:"%23"
-    |> String.replace_all ~pattern:"[" ~with_:"%5B"
-    |> String.replace_all ~pattern:"]" ~with_:"%5D"
-    |> String.replace_all ~pattern:"@" ~with_:"%40"
-    |> String.replace_all ~pattern:"!" ~with_:"%21"
-    |> String.replace_all ~pattern:"$" ~with_:"%24"
-    |> String.replace_all ~pattern:"&" ~with_:"%26"
-    |> String.replace_all ~pattern:"'" ~with_:"%27"
-    |> String.replace_all ~pattern:"(" ~with_:"%28"
-    |> String.replace_all ~pattern:")" ~with_:"%29"
-    |> String.replace_all ~pattern:"*" ~with_:"%2A"
-    |> String.replace_all ~pattern:"+" ~with_:"%2B"
-    |> String.replace_all ~pattern:"," ~with_:"%2C"
-    |> String.replace_all ~pattern:";" ~with_:"%3B"
-    |> String.replace_all ~pattern:"=" ~with_:"%3D"
-    |> String.replace_all ~pattern:" " ~with_:"%20");
-  Buffer.contents b
+  let res = ref "" in
+
+  if scheme <> "" then res := scheme ^ ":";
+
+  if authority = "file" || scheme = "file" then res := !res ^ "//";
+
+  (*TODO: implement full logic *)
+  (if authority <> "" then
+   let value = String.lowercase_ascii authority in
+   res := !res ^ encode value);
+
+  (*TODO: needed ? *)
+  if path <> "" then (
+    let value = ref path in
+    let len = String.length path in
+    (*TODO: should we use charCode instead ? *)
+    (if len >= 3 && path.[0] = '/' && path.[2] = ':' then (
+     let code = path.[1] in
+     if code >= 'A' && code <= 'Z' then
+       value :=
+         "/"
+         ^ (String.make 1 code |> String.lowercase_ascii)
+         ^ ":"
+         ^ String.sub path ~pos:3 ~len:(len - 3))
+    else if len >= 2 && path.[1] = ':' then
+      let code = path.[0] in
+      if code >= 'A' && code <= 'Z' then
+        value :=
+          "/"
+          ^ (String.make 1 code |> String.lowercase_ascii)
+          ^ ":"
+          ^ String.sub path ~pos:2 ~len:(len - 2));
+    res := !res ^ encode ~allow_slash:true !value);
+
+  !res
 
 let yojson_of_t t = `String (to_string t)
+
+let t_of_yojson json = Json.Conv.string_of_yojson json |> of_string
 
 let equal = ( = )
 
@@ -59,36 +138,7 @@ let hash = Hashtbl.hash
 let to_dyn { scheme; authority; path } =
   let open Dyn in
   record
-    [ ("scheme", (option string) scheme)
+    [ ("scheme", string scheme)
     ; ("authority", string authority)
     ; ("path", string path)
     ]
-
-let to_path t =
-  let path =
-    t.path
-    |> String.replace_all ~pattern:"%5C" ~with_:"\\"
-    |> String.replace_all ~pattern:"%3A" ~with_:":"
-    |> String.replace_all ~pattern:"%3F" ~with_:"?"
-    |> String.replace_all ~pattern:"%23" ~with_:"#"
-    |> String.replace_all ~pattern:"%5B" ~with_:"["
-    |> String.replace_all ~pattern:"%5D" ~with_:"]"
-    |> String.replace_all ~pattern:"%40" ~with_:"@"
-    |> String.replace_all ~pattern:"%21" ~with_:"1"
-    |> String.replace_all ~pattern:"%24" ~with_:"$"
-    |> String.replace_all ~pattern:"%26" ~with_:"&"
-    |> String.replace_all ~pattern:"%27" ~with_:"'"
-    |> String.replace_all ~pattern:"%28" ~with_:"("
-    |> String.replace_all ~pattern:"%29" ~with_:")"
-    |> String.replace_all ~pattern:"%2A" ~with_:"*"
-    |> String.replace_all ~pattern:"%2B" ~with_:"+"
-    |> String.replace_all ~pattern:"%2C" ~with_:","
-    |> String.replace_all ~pattern:"%3B" ~with_:";"
-    |> String.replace_all ~pattern:"%3D" ~with_:"="
-    |> String.replace_all ~pattern:"%20" ~with_:" "
-  in
-  path
-
-let of_path (path : string) =
-  let path = Uri_lexer.escape_path path in
-  { path; scheme = Some "file"; authority = "" }

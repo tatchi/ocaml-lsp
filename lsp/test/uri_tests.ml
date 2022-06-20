@@ -1,4 +1,4 @@
-module Uri = Lsp.Uri1
+module Uri = Lsp.Uri
 
 let run_with_modes f =
   print_endline "Unix:";
@@ -63,7 +63,7 @@ let%expect_test "test of_path -> to_path" =
 let%expect_test "test of_string -> to_path" =
   let test_of_path =
     let test s =
-      let uri = Uri.of_string s in
+      let uri = Uri.t_of_yojson (`String s) in
       Printf.printf "%s -> %s\n" s (Uri.to_path uri)
     in
     fun uris -> run_with_modes (fun () -> List.iter test uris)
@@ -145,7 +145,7 @@ let%expect_test "test of_path -> to_string (win-special)" =
 let%expect_test "test of_string -> to_string" =
   let test_of_path =
     let test s =
-      let uri = Uri.of_string s in
+      let uri = Uri.t_of_yojson (`String s) in
       Printf.printf "%s -> %s\n" s (Uri.to_string uri)
     in
     fun uris -> List.iter test uris
@@ -155,3 +155,10 @@ let%expect_test "test of_string -> to_string" =
     {|
     file://shä\res/pröjects/c%23/ -> file://sh%C3%A4%5Cres/pr%C3%B6jects/c%23/
     |}]
+
+let test_uri_parsing =
+  let test s =
+    let uri = Uri.t_of_yojson (`String s) in
+    Printf.printf "%s -> %s\n" s (Uri.to_path uri)
+  in
+  fun uris -> run_with_modes (fun () -> List.iter test uris)
