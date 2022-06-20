@@ -105,8 +105,27 @@ let%expect_test "test of_path -> to_string" =
   test_of_path [ "c:/win/path"; "C:/win/path"; "c:/win/path/"; "/c:/win/path" ];
   [%expect
     {|
-    c:/win/path -> file:///c:/win/path
-    C:/win/path -> file:///c:/win/path
-    c:/win/path/ -> file:///c:/win/path/
-    /c:/win/path -> file:///c:/win/path
+    c:/win/path -> file:///c%3A/win/path
+    C:/win/path -> file:///c%3A/win/path
+    c:/win/path/ -> file:///c%3A/win/path/
+    /c:/win/path -> file:///c%3A/win/path
+    |}]
+
+let%expect_test "test of_path -> to_string (win-special)" =
+  let test_of_path =
+    let test s =
+      let uri = Uri.of_path s in
+      Printf.printf "%s -> %s\n" s (Uri.to_string uri)
+    in
+    fun uris -> run_with_modes (fun () -> List.iter test uris)
+  in
+  test_of_path [ "c:\\win\\path"; "c:\\win/path" ];
+  [%expect {|
+    Unix:
+    c:\win\path -> file:///c%3A%5Cwin%5Cpath
+    c:\win/path -> file:///c%3A%5Cwin/path
+    Windows:
+    c:\win\path -> file:///c%3A/win/path
+    c:\win/path -> file:///c%3A/win/path
+
     |}]

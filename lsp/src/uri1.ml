@@ -80,6 +80,21 @@ let of_string s =
   let path = group res 5 |> Uri.pct_decode in
   { scheme; authority; path }
 
+let encode s =
+  Uri.pct_encode ~component:(`Custom (`Generic, "/", "")) s
+
+(* let _encode s =
+  let buff = Buffer.create (String.length s) in
+  String.iter
+    ~f:(function
+      (*'a' .. 'z' | 'A' .. 'Z' | '1' .. '9' | '-' | '.' | '_' | '~' *)
+      | '/' as c -> Buffer.add_char buff c
+      | c ->
+        Buffer.add_string buff
+          (Uri.pct_encode ~component:`Generic (String.make 1 c)))
+    s;
+  Buffer.contents buff *)
+
 let to_string { scheme; authority; path } =
   let res = ref "" in
 
@@ -88,6 +103,7 @@ let to_string { scheme; authority; path } =
   if authority = "file" || scheme = "file" then res := !res ^ "//";
 
   (*TODO: handle authority *)
+  (* print_endline path; *)
 
   (*TODO: needed ? *)
   if path <> "" then (
@@ -110,6 +126,6 @@ let to_string { scheme; authority; path } =
           ^ (String.make 1 code |> String.lowercase_ascii)
           ^ ":"
           ^ String.sub path ~pos:2 ~len:(len - 2));
-    res := !res ^ !value);
+    res := !res ^ encode !value);
 
   !res
