@@ -150,8 +150,8 @@ let%expect_test "test of_string -> to_string" =
     in
     fun uris -> List.iter test uris
   in
-  test_of_path [ "file://shares/pröjects/c%23/#l12" ];
+  test_of_path [ "file://shä\\res/pröjects/c%23/" ];
   [%expect
     {|
-    file://shares/pröjects/c%23/#l12 -> file://shares/pr%C3%B6jects/c%23/#l12
+    file://shä\res/pröjects/c%23/ -> file://sh%C3%A4%5Cres/pr%C3%B6jects/c%23/
     |}]
