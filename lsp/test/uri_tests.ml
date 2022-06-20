@@ -102,13 +102,24 @@ let%expect_test "test of_path -> to_string" =
     in
     fun uris -> List.iter test uris
   in
-  test_of_path [ "c:/win/path"; "C:/win/path"; "c:/win/path/"; "/c:/win/path" ];
+  test_of_path
+    [ "c:/win/path"
+    ; "C:/win/path"
+    ; "c:/win/path/"
+    ; "/c:/win/path"
+    ; "c:\\test with %\\path"
+    ; "c:\\test with %25\\c#code"
+    ; "/Users/jrieken/Code/_samples/18500/Mödel + Other Thîngß/model.js"
+    ];
   [%expect
     {|
     c:/win/path -> file:///c%3A/win/path
     C:/win/path -> file:///c%3A/win/path
     c:/win/path/ -> file:///c%3A/win/path/
     /c:/win/path -> file:///c%3A/win/path
+    c:\test with %\path -> file:///c%3A/test%20with%20%25/path
+    c:\test with %25\c#code -> file:///c%3A/test%20with%20%2525/c%23code
+    /Users/jrieken/Code/_samples/18500/Mödel + Other Thîngß/model.js -> file:///Users/jrieken/Code/_samples/18500/M%C3%B6del%20%2B%20Other%20Th%C3%AEng%C3%9F/model.js
     |}]
 
 let%expect_test "test of_path -> to_string (win-special)" =
@@ -120,7 +131,8 @@ let%expect_test "test of_path -> to_string (win-special)" =
     fun uris -> run_with_modes (fun () -> List.iter test uris)
   in
   test_of_path [ "c:\\win\\path"; "c:\\win/path" ];
-  [%expect {|
+  [%expect
+    {|
     Unix:
     c:\win\path -> file:///c%3A%5Cwin%5Cpath
     c:\win/path -> file:///c%3A%5Cwin/path
@@ -128,4 +140,18 @@ let%expect_test "test of_path -> to_string (win-special)" =
     c:\win\path -> file:///c%3A/win/path
     c:\win/path -> file:///c%3A/win/path
 
+    |}]
+
+let%expect_test "test of_string -> to_string" =
+  let test_of_path =
+    let test s =
+      let uri = Uri.of_string s in
+      Printf.printf "%s -> %s\n" s (Uri.to_string uri)
+    in
+    fun uris -> List.iter test uris
+  in
+  test_of_path [ "file://shares/pröjects/c%23/#l12" ];
+  [%expect
+    {|
+    file://shares/pröjects/c%23/#l12 -> file://shares/pr%C3%B6jects/c%23/#l12
     |}]
