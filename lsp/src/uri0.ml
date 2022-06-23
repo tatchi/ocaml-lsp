@@ -117,8 +117,7 @@ let to_string { scheme; authority; path } =
       let code = path.[0] in
       if code >= 'A' && code <= 'Z' then
         value :=
-          "/"
-          ^ (String.make 1 code |> String.lowercase_ascii)
+          (String.make 1 code |> String.lowercase_ascii)
           ^ ":"
           ^ String.sub path ~pos:2 ~len:(len - 2));
     res := !res ^ encode ~allow_slash:true !value);
