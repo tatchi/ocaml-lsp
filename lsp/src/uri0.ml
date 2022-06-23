@@ -33,7 +33,7 @@ let of_path path =
         let authority = String.sub path ~pos:2 ~len:(i - 2) in
         let path =
           let path = String.sub path ~pos:i ~len:(len - i) in
-          if path = "" then "/" else path
+          if String.is_empty path then "/" else path
         in
         (path, authority)
     else (path, "")
@@ -47,7 +47,7 @@ let to_path { path; authority; scheme } =
   let path =
     let len = String.length path in
     if len = 0 then "/"
-    else if authority <> "" && len > 1 && scheme = "file" then
+    else if (not (String.is_empty authority)) && len > 1 && scheme = "file" then
       "//" ^ authority ^ path
     else if len < 3 then path
     else
@@ -75,7 +75,15 @@ let of_string s =
   let scheme = Re.Group.get_opt res 2 |> Option.value ~default:"file" in
   let group re n = Re.Group.get_opt re n |> Option.value ~default:"" in
   let authority = group res 4 |> Uri.pct_decode in
-  let path = group res 5 |> Uri.pct_decode in
+  let path =
+    let path = group res 5 |> Uri.pct_decode in
+    match scheme with
+    | "http" | "https" | "file" ->
+      if String.is_empty path then "/"
+      else if path.[0] <> '/' then "/" ^ path
+      else path
+    | _ -> path
+  in
   { scheme; authority; path }
 
 let encode ?(allow_slash = false) s =
@@ -91,17 +99,17 @@ let encode ?(allow_slash = false) s =
 let to_string { scheme; authority; path } =
   let res = ref "" in
 
-  if scheme <> "" then res := scheme ^ ":";
+  if not (String.is_empty scheme) then res := scheme ^ ":";
 
   if authority = "file" || scheme = "file" then res := !res ^ "//";
 
   (*TODO: implement full logic *)
-  (if authority <> "" then
+  (if not (String.is_empty authority) then
    let value = String.lowercase_ascii authority in
    res := !res ^ encode value);
 
   (*TODO: needed ? *)
-  if path <> "" then (
+  if not (String.is_empty path) then (
     let value = ref path in
     let len = String.length path in
     (*TODO: should we use charCode instead ? *)
