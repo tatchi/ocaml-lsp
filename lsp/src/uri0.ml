@@ -72,8 +72,8 @@ let of_string s =
     |> Re.compile
   in
   let res = Re.exec re s in
+  let scheme = Re.Group.get_opt res 2 |> Option.value ~default:"file" in
   let group re n = Re.Group.get_opt re n |> Option.value ~default:"" in
-  let scheme = group res 2 in
   let authority = group res 4 |> Uri.pct_decode in
   let path = group res 5 |> Uri.pct_decode in
   { scheme; authority; path }
