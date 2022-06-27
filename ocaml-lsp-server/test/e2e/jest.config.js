@@ -1,9 +1,8 @@
 module.exports = {
-  preset: "ts-jest",
   roots: ["<rootDir>"],
   testEnvironment: "node",
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": "@sucrase/jest-plugin",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
