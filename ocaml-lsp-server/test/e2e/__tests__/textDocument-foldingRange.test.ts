@@ -45,15 +45,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 4,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 9,
           "endLine": 4,
           "kind": "region",
@@ -74,22 +74,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 3,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 3,
           "kind": "region",
           "startCharacter": 5,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 6,
           "endLine": 2,
           "kind": "region",
@@ -108,8 +108,8 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 6,
           "endLine": 2,
           "kind": "region",
@@ -133,22 +133,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 29,
           "endLine": 7,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 7,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 7,
           "kind": "region",
@@ -169,15 +169,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 7,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 3,
           "kind": "region",
@@ -203,29 +203,29 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 2,
           "kind": "region",
           "startCharacter": 5,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 4,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 19,
           "startLine": 4,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 7,
           "kind": "region",
@@ -251,22 +251,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 21,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 4,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 4,
         },
-        Object {
+        {
           "endCharacter": 21,
           "endLine": 8,
           "kind": "region",
@@ -293,29 +293,29 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 1,
           "endLine": 3,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 15,
           "endLine": 9,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 5,
         },
-        Object {
+        {
           "endCharacter": 11,
           "endLine": 7,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 6,
         },
-        Object {
+        {
           "endCharacter": 15,
           "endLine": 9,
           "kind": "region",
@@ -354,50 +354,50 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 21,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 21,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 6,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 21,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 7,
         },
-        Object {
+        {
           "endCharacter": 15,
           "endLine": 20,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 8,
         },
-        Object {
+        {
           "endCharacter": 13,
           "endLine": 18,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 9,
         },
-        Object {
+        {
           "endCharacter": 12,
           "endLine": 16,
           "kind": "region",
@@ -417,8 +417,8 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 4,
           "endLine": 3,
           "kind": "region",
@@ -439,8 +439,8 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 4,
           "endLine": 3,
           "kind": "region",
@@ -462,15 +462,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 3,
           "kind": "region",
@@ -494,22 +494,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 18,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 5,
           "kind": "region",
@@ -535,22 +535,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 4,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 25,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 7,
           "kind": "region",
@@ -574,22 +574,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 14,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 20,
           "endLine": 5,
           "kind": "region",
@@ -613,8 +613,8 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 6,
           "kind": "region",
@@ -639,15 +639,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 8,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 33,
           "endLine": 4,
           "kind": "region",
@@ -672,15 +672,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 4,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 4,
           "kind": "region",
@@ -702,15 +702,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 9,
           "endLine": 3,
           "kind": "region",
@@ -747,36 +747,36 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 6,
           "endLine": 20,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 2,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 6,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 14,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 12,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 18,
           "kind": "region",
@@ -799,15 +799,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 8,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 9,
           "endLine": 3,
           "kind": "region",
@@ -838,36 +838,36 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 8,
           "endLine": 13,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 8,
           "endLine": 13,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 2,
         },
-        Object {
+        {
           "endCharacter": 8,
           "endLine": 13,
           "kind": "region",
           "startCharacter": 13,
           "startLine": 8,
         },
-        Object {
+        {
           "endCharacter": 29,
           "endLine": 11,
           "kind": "region",
@@ -892,15 +892,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 7,
           "endLine": 7,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 5,
           "kind": "region",
@@ -974,148 +974,148 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 16,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 56,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 7,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 56,
           "kind": "region",
           "startCharacter": 11,
           "startLine": 7,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 18,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 8,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 18,
           "kind": "region",
           "startCharacter": 18,
           "startLine": 8,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 14,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 9,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 14,
           "kind": "region",
           "startCharacter": 16,
           "startLine": 9,
         },
-        Object {
+        {
           "endCharacter": 11,
           "endLine": 13,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 10,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 31,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 20,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 31,
           "kind": "region",
           "startCharacter": 13,
           "startLine": 20,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 30,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 21,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 30,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 22,
         },
-        Object {
+        {
           "endCharacter": 31,
           "endLine": 26,
           "kind": "region",
           "startCharacter": 12,
           "startLine": 23,
         },
-        Object {
+        {
           "endCharacter": 30,
           "endLine": 30,
           "kind": "region",
           "startCharacter": 14,
           "startLine": 27,
         },
-        Object {
+        {
           "endCharacter": 9,
           "endLine": 55,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 33,
         },
-        Object {
+        {
           "endCharacter": 11,
           "endLine": 53,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 34,
         },
-        Object {
+        {
           "endCharacter": 10,
           "endLine": 42,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 38,
         },
-        Object {
+        {
           "endCharacter": 25,
           "endLine": 47,
           "kind": "region",
           "startCharacter": 6,
           "startLine": 45,
         },
-        Object {
+        {
           "endCharacter": 11,
           "endLine": 53,
           "kind": "region",
@@ -1138,22 +1138,22 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 40,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 40,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 9,
           "endLine": 3,
           "kind": "region",
@@ -1175,15 +1175,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
@@ -1210,36 +1210,36 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 9,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 9,
           "kind": "region",
           "startCharacter": 19,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 2,
         },
-        Object {
+        {
           "endCharacter": 47,
           "endLine": 7,
           "kind": "region",
@@ -1261,29 +1261,29 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 3,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 16,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 3,
           "kind": "region",
           "startCharacter": 2,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 3,
           "kind": "region",
@@ -1306,15 +1306,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 5,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 5,
           "kind": "region",
@@ -1336,15 +1336,15 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 5,
           "endLine": 4,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 5,
           "endLine": 4,
           "kind": "region",
@@ -1370,29 +1370,29 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 8,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 8,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 10,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 8,
           "kind": "region",
           "startCharacter": 5,
           "startLine": 3,
         },
-        Object {
+        {
           "endCharacter": 35,
           "endLine": 7,
           "kind": "region",
@@ -1416,36 +1416,36 @@ describe("textDocument/foldingRange", () => {
 
     let result = await foldingRange();
     expect(result).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "endCharacter": 7,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 0,
           "startLine": 0,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 10,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 18,
           "startLine": 1,
         },
-        Object {
+        {
           "endCharacter": 7,
           "endLine": 6,
           "kind": "region",
           "startCharacter": 4,
           "startLine": 2,
         },
-        Object {
+        {
           "endCharacter": 11,
           "endLine": 5,
           "kind": "region",

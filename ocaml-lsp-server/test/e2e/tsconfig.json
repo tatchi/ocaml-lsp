@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
+    "types": ["node", "vitest/globals"],
     "esModuleInterop": true,
-    "lib": ["es2015"]
+    "skipLibCheck": true
   }
 }

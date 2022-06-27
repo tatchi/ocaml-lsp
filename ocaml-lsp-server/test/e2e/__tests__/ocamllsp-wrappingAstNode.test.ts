@@ -71,12 +71,12 @@ end
         let k = 1
     */
     expect(r).toMatchInlineSnapshot(`
-      Object {
-        "end": Object {
+      {
+        "end": {
           "character": 9,
           "line": 0,
         },
-        "start": Object {
+        "start": {
           "character": 0,
           "line": 0,
         },
@@ -93,12 +93,12 @@ end
         whole `code_snippet_0`
     */
     expect(r).toMatchInlineSnapshot(`
-      Object {
-        "end": Object {
+      {
+        "end": {
           "character": 3,
           "line": 8,
         },
-        "start": Object {
+        "start": {
           "character": 0,
           "line": 0,
         },
@@ -121,12 +121,12 @@ end
         end
     */
     expect(r).toMatchInlineSnapshot(`
-      Object {
-        "end": Object {
+      {
+        "end": {
           "character": 3,
           "line": 8,
         },
-        "start": Object {
+        "start": {
           "character": 0,
           "line": 2,
         },
@@ -144,12 +144,12 @@ end
           b + 1
     */
     expect(r).toMatchInlineSnapshot(`
-      Object {
-        "end": Object {
+      {
+        "end": {
           "character": 9,
           "line": 5,
         },
-        "start": Object {
+        "start": {
           "character": 2,
           "line": 3,
         },
@@ -170,12 +170,12 @@ end
         let c = 2
     */
     expect(r).toMatchInlineSnapshot(`
-      Object {
-        "end": Object {
+      {
+        "end": {
           "character": 11,
           "line": 7,
         },
-        "start": Object {
+        "start": {
           "character": 2,
           "line": 3,
         },

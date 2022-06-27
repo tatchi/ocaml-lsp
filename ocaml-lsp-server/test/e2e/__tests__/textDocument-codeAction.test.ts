@@ -99,17 +99,17 @@ let f (x : t) = x
     let end = Types.Position.create(2, 17);
     let actions = await codeAction("file:///test.ml", start, end);
     expect(actions).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "command": Object {
-            "arguments": Array [
-              Object {
-                "inRange": Object {
-                  "end": Object {
+      [
+        {
+          "command": {
+            "arguments": [
+              {
+                "inRange": {
+                  "end": {
                     "character": 54,
                     "line": 2,
                   },
-                  "start": Object {
+                  "start": {
                     "character": 16,
                     "line": 2,
                   },
@@ -120,25 +120,25 @@ let f (x : t) = x
             "command": "ocaml.next-hole",
             "title": "Jump to Next Hole",
           },
-          "edit": Object {
-            "documentChanges": Array [
-              Object {
-                "edits": Array [
-                  Object {
+          "edit": {
+            "documentChanges": [
+              {
+                "edits": [
+                  {
                     "newText": "match x with | Foo _ -> _ | Bar _ -> _",
-                    "range": Object {
-                      "end": Object {
+                    "range": {
+                      "end": {
                         "character": 17,
                         "line": 2,
                       },
-                      "start": Object {
+                      "start": {
                         "character": 16,
                         "line": 2,
                       },
                     },
                   },
                 ],
-                "textDocument": Object {
+                "textDocument": {
                   "uri": "file:///test.ml",
                   "version": 0,
                 },
@@ -149,26 +149,26 @@ let f (x : t) = x
           "kind": "destruct",
           "title": "Destruct",
         },
-        Object {
-          "edit": Object {
-            "documentChanges": Array [
-              Object {
-                "edits": Array [
-                  Object {
+        {
+          "edit": {
+            "documentChanges": [
+              {
+                "edits": [
+                  {
                     "newText": "(x : t)",
-                    "range": Object {
-                      "end": Object {
+                    "range": {
+                      "end": {
                         "character": 17,
                         "line": 2,
                       },
-                      "start": Object {
+                      "start": {
                         "character": 16,
                         "line": 2,
                       },
                     },
                   },
                 ],
-                "textDocument": Object {
+                "textDocument": {
                   "uri": "file:///test.ml",
                   "version": 0,
                 },
@@ -197,28 +197,28 @@ let f (x : t) = x
     let end = Types.Position.create(0, 0);
     let actions = await codeAction("file:///test.mli", start, end);
     expect(findInferredAction(actions)).toMatchInlineSnapshot(`
-      Object {
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+      {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "type t = Foo of int | Bar of bool
       val f : t -> t
       ",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 0,
                       "line": 0,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 0,
                       "line": 0,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///test.mli",
                 "version": 0,
               },
@@ -242,25 +242,25 @@ let f (x : t) = x
     let actions = await codeAction(intfUri, start, end);
     expect(findInferredAction(actions).edit.documentChanges.map((a) => a.edits))
       .toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
-            "newText": "val x : int
-      ",
-            "range": Object {
-              "end": Object {
-                "character": 0,
-                "line": 0,
-              },
-              "start": Object {
-                "character": 0,
-                "line": 0,
+        [
+          [
+            {
+              "newText": "val x : int
+        ",
+              "range": {
+                "end": {
+                  "character": 0,
+                  "line": 0,
+                },
+                "start": {
+                  "character": 0,
+                  "line": 0,
+                },
               },
             },
-          },
-        ],
-      ]
-    `);
+          ],
+        ]
+      `);
   });
 
   it("can type-annotate a function argument", async () => {
@@ -276,26 +276,26 @@ let f x = Foo x
     let end = Types.Position.create(2, 7);
     let actions = await codeAction("file:///test.ml", start, end);
     expect(findAnnotateAction(actions)).toMatchInlineSnapshot(`
-      Object {
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+      {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "(x : int)",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 7,
                       "line": 2,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 6,
                       "line": 2,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///test.ml",
                 "version": 0,
               },
@@ -320,26 +320,26 @@ let iiii = 3 + 4
     let end = Types.Position.create(0, 5);
     let actions = await codeAction("file:///test.ml", start, end);
     expect(findAnnotateAction(actions)).toMatchInlineSnapshot(`
-      Object {
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+      {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "(iiii : int)",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 8,
                       "line": 0,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 4,
                       "line": 0,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///test.ml",
                 "version": 0,
               },
@@ -367,26 +367,26 @@ let () =
     let end = Types.Position.create(3, 16);
     let actions = await codeAction("file:///test.ml", start, end);
     expect(findAnnotateAction(actions)).toMatchInlineSnapshot(`
-      Object {
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+      {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "(i : int)",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 16,
                       "line": 3,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 15,
                       "line": 3,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///test.ml",
                 "version": 0,
               },
@@ -413,26 +413,26 @@ let f (x : t) = x
     let end = Types.Position.create(2, 17);
     let actions = await codeAction("file:///test.ml", start, end);
     expect(findAnnotateAction(actions)).toMatchInlineSnapshot(`
-      Object {
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+      {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "(x : t)",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 17,
                       "line": 2,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 16,
                       "line": 2,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///test.ml",
                 "version": 0,
               },
@@ -484,8 +484,8 @@ let x = _
     );
 
     expect(construct_actions).toMatchInlineSnapshot(`
-      Object {
-        "command": Object {
+      {
+        "command": {
           "command": "editor.action.triggerSuggest",
           "title": "Trigger Suggest",
         },
@@ -549,32 +549,32 @@ let x = _
     });
 
     expect(specificCodeActions).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "edit": Object {
-            "changes": Object {
-              "file:///test.ml": Array [
-                Object {
+      [
+        {
+          "edit": {
+            "changes": {
+              "file:///test.ml": [
+                {
                   "newText": "f",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 11,
                       "line": 7,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 8,
                       "line": 7,
                     },
                   },
                 },
-                Object {
+                {
                   "newText": "a",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 15,
                       "line": 7,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 12,
                       "line": 7,
                     },
@@ -609,32 +609,32 @@ let x = _
     });
 
     expect(specificCodeActions).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "edit": Object {
-            "changes": Object {
-              "file:///test.ml": Array [
-                Object {
+      [
+        {
+          "edit": {
+            "changes": {
+              "file:///test.ml": [
+                {
                   "newText": "M.f",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 9,
                       "line": 7,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 8,
                       "line": 7,
                     },
                   },
                 },
-                Object {
+                {
                   "newText": "M.a",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 11,
                       "line": 7,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 10,
                       "line": 7,
                     },
@@ -672,16 +672,16 @@ let needs_rec x = 1 + (needs_rec x)
 
     let actions = await codeAction(uri, start, end, context);
     expect(findAddRecAnnotation(actions)).toMatchInlineSnapshot(`
-      Object {
-        "diagnostics": Array [
-          Object {
+      {
+        "diagnostics": [
+          {
             "message": "Unbound value",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 32,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
@@ -690,25 +690,25 @@ let needs_rec x = 1 + (needs_rec x)
             "source": "ocamllsp",
           },
         ],
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "rec ",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 4,
                       "line": 0,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 4,
                       "line": 0,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///missing-rec-1.ml",
                 "version": 0,
               },
@@ -745,16 +745,16 @@ let outer =
 
     let actions = await codeAction(uri, start, end, context);
     expect(findAddRecAnnotation(actions)).toMatchInlineSnapshot(`
-      Object {
-        "diagnostics": Array [
-          Object {
+      {
+        "diagnostics": [
+          {
             "message": "Unbound value",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 14,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 9,
                 "line": 2,
               },
@@ -763,25 +763,25 @@ let outer =
             "source": "ocamllsp",
           },
         ],
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "rec ",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 6,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 6,
                       "line": 1,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///missing-rec-2.ml",
                 "version": 0,
               },
@@ -819,16 +819,16 @@ let outer =
 
     let actions = await codeAction(uri, start, end, context);
     expect(findAddRecAnnotation(actions)).toMatchInlineSnapshot(`
-      Object {
-        "diagnostics": Array [
-          Object {
+      {
+        "diagnostics": [
+          {
             "message": "Unbound value",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 14,
                 "line": 3,
               },
-              "start": Object {
+              "start": {
                 "character": 9,
                 "line": 3,
               },
@@ -837,25 +837,25 @@ let outer =
             "source": "ocamllsp",
           },
         ],
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "rec ",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 6,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 6,
                       "line": 1,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///missing-rec-3.ml",
                 "version": 0,
               },
@@ -935,16 +935,16 @@ let f x =
 
     let actions = await codeAction(uri, start, end, context);
     expect(findMarkUnused(actions)).toMatchInlineSnapshot(`
-      Object {
-        "diagnostics": Array [
-          Object {
+      {
+        "diagnostics": [
+          {
             "message": "Error (warning 26): unused variable",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 6,
                 "line": 1,
               },
@@ -953,25 +953,25 @@ let f x =
             "source": "ocamllsp",
           },
         ],
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "_",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 6,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 6,
                       "line": 1,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///mark-unused-variable.ml",
                 "version": 0,
               },
@@ -1011,16 +1011,16 @@ let f x =
 
     let actions = await codeAction(uri, start, end, context);
     expect(findRemoveUnused(actions)).toMatchInlineSnapshot(`
-      Object {
-        "diagnostics": Array [
-          Object {
+      {
+        "diagnostics": [
+          {
             "message": "Error (warning 26): unused variable",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 6,
                 "line": 1,
               },
@@ -1029,25 +1029,25 @@ let f x =
             "source": "ocamllsp",
           },
         ],
-        "edit": Object {
-          "documentChanges": Array [
-            Object {
-              "edits": Array [
-                Object {
+        "edit": {
+          "documentChanges": [
+            {
+              "edits": [
+                {
                   "newText": "",
-                  "range": Object {
-                    "end": Object {
+                  "range": {
+                    "end": {
                       "character": 2,
                       "line": 5,
                     },
-                    "start": Object {
+                    "start": {
                       "character": 2,
                       "line": 1,
                     },
                   },
                 },
               ],
-              "textDocument": Object {
+              "textDocument": {
                 "uri": "file:///remove-unused-variable.ml",
                 "version": 0,
               },

@@ -4,7 +4,7 @@
   "scripts": {
     "fmt-check": "prettier --check .",
     "fmt": "prettier --write .",
-    "test": "jest",
+    "test": "vitest run",
     "promote": "jest --updateSnapshot"
   },
   "dependencies": {
@@ -12,12 +12,10 @@
     "vscode-uri": "^3.0.2"
   },
   "devDependencies": {
-    "@types/jest": "27.0.2",
     "@types/node": "14.14.25",
-    "jest": "27.3.1",
     "prettier": "2.2.1",
-    "ts-jest": "27.0.7",
     "typescript": "4.1.3",
+    "vitest": "^0.16.0",
     "vscode-jsonrpc": "6.0.0",
     "vscode-languageserver-protocol": "3.16.0",
     "vscode-languageserver-types": "3.16.0"

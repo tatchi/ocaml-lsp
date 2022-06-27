@@ -4,9 +4,7 @@ import * as LanguageServer from "./../src/LanguageServer";
 import * as Types from "vscode-languageserver-types";
 import { Position } from "vscode-languageserver-types";
 
-const describe_opt = LanguageServer.ocamlVersionGEq("4.08.0")
-  ? describe
-  : xdescribe;
+const describe_opt = describe;
 
 describe_opt("textDocument/completion", () => {
   let languageServer = null;
@@ -85,17 +83,17 @@ g ~f:ig
 
     let items = await queryCompletion(Types.Position.create(1, 7));
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "ignore",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "ignore",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 5,
                 "line": 1,
               },
@@ -115,17 +113,17 @@ g ~f:M.ig
 
     let items = await queryCompletion(Types.Position.create(2, 9));
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "igfoo",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "igfoo",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 9,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 7,
                 "line": 2,
               },
@@ -144,17 +142,17 @@ g ?f:ig
 
     let items = await queryCompletion(Types.Position.create(1, 7));
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "ignore",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "ignore",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 7,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 5,
                 "line": 1,
               },
@@ -174,17 +172,17 @@ g ?f:M.ig
 
     let items = await queryCompletion(Types.Position.create(2, 9));
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "igfoo",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "igfoo",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 9,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 7,
                 "line": 2,
               },
@@ -224,33 +222,33 @@ g ?f:M.ig
     let items = await queryCompletion(Types.Position.create(5, 13));
 
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "somenum",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "somenum",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 13,
                 "line": 5,
               },
-              "start": Object {
+              "start": {
                 "character": 13,
                 "line": 5,
               },
             },
           },
         },
-        Object {
+        {
           "label": "somestring",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "somestring",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 13,
                 "line": 5,
               },
-              "start": Object {
+              "start": {
                 "character": 13,
                 "line": 5,
               },
@@ -269,49 +267,49 @@ g ?f:M.ig
 
     let items = await queryCompletion(Types.Position.create(1, 11));
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": ">>|",
-          "textEdit": Object {
+          "textEdit": {
             "newText": ">>|",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 10,
                 "line": 1,
               },
             },
           },
         },
-        Object {
+        {
           "label": ">",
-          "textEdit": Object {
+          "textEdit": {
             "newText": ">",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 10,
                 "line": 1,
               },
             },
           },
         },
-        Object {
+        {
           "label": ">=",
-          "textEdit": Object {
+          "textEdit": {
             "newText": ">=",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 11,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "character": 10,
                 "line": 1,
               },
@@ -367,81 +365,81 @@ g ?f:M.ig
     let items = await queryCompletion(Types.Position.create(4, 12));
     let items_top5 = items.slice(0, 5);
     expect(items_top5).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "somenum",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "somenum",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 12,
                 "line": 4,
               },
-              "start": Object {
+              "start": {
                 "character": 12,
                 "line": 4,
               },
             },
           },
         },
-        Object {
+        {
           "label": "x",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "x",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 12,
                 "line": 4,
               },
-              "start": Object {
+              "start": {
                 "character": 12,
                 "line": 4,
               },
             },
           },
         },
-        Object {
+        {
           "label": "y",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "y",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 12,
                 "line": 4,
               },
-              "start": Object {
+              "start": {
                 "character": 12,
                 "line": 4,
               },
             },
           },
         },
-        Object {
+        {
           "label": "max_int",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "max_int",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 12,
                 "line": 4,
               },
-              "start": Object {
+              "start": {
                 "character": 12,
                 "line": 4,
               },
             },
           },
         },
-        Object {
+        {
           "label": "min_int",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "min_int",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 12,
                 "line": 4,
               },
-              "start": Object {
+              "start": {
                 "character": 12,
                 "line": 4,
               },
@@ -458,81 +456,81 @@ g ?f:M.ig
     let items = await queryCompletion(Types.Position.create(0, 24));
     let items_top5 = items.slice(0, 10);
     expect(items_top5).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "~+",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "~+",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 24,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
             },
           },
         },
-        Object {
+        {
           "label": "~+.",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "~+.",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 24,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
             },
           },
         },
-        Object {
+        {
           "label": "~-",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "~-",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 24,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
             },
           },
         },
-        Object {
+        {
           "label": "~-.",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "~-.",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 24,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
             },
           },
         },
-        Object {
+        {
           "label": "~f",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "~f",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 24,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 23,
                 "line": 0,
               },
@@ -569,17 +567,17 @@ let u = f \`Str
     let items = await queryCompletion(Position.create(2, 15));
 
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "\`String",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "\`String",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 15,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 11,
                 "line": 2,
               },
@@ -600,17 +598,17 @@ let u = f \`In
     let items = await queryCompletion(Position.create(2, 14));
 
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "\`Int",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "\`Int",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 14,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 11,
                 "line": 2,
               },
@@ -631,17 +629,17 @@ let x : t = \`I
     let items = await queryCompletion(Position.create(2, 15));
 
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "\`Int",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "\`Int",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 15,
                 "line": 2,
               },
-              "start": Object {
+              "start": {
                 "character": 13,
                 "line": 2,
               },
@@ -666,17 +664,17 @@ let u : int = _
     );
 
     expect(items).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "label": "0",
-          "textEdit": Object {
+          "textEdit": {
             "newText": "0",
-            "range": Object {
-              "end": Object {
+            "range": {
+              "end": {
                 "character": 15,
                 "line": 0,
               },
-              "start": Object {
+              "start": {
                 "character": 14,
                 "line": 0,
               },

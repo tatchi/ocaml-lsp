@@ -95,6 +95,7 @@ export const testUri = (file: string) => {
 };
 
 export const toEqualUri = function (received: string, expected: string) {
+  console.log("IN!")
   const obj = this;
 
   const options = {
